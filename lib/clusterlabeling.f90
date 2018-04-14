@@ -27,28 +27,21 @@ module clusterlabeling
             integer, intent(in) :: i, j, label
             integer :: L
 
-            ! print *, "growcluster called with i = ", i, ", j = ", j
-
             L = size(matrix,1)
 
             labeled_matrix(i,j) = label
 
-
-            if(i>1 .and. matrix(i-1,j) .and. labeled_matrix(i-1,j)==0) then
-                ! print *, "Checking i = ", i-1, ", j = ", j
-                call growcluster(matrix, labeled_matrix, i-1, j, label)
-            endif
-            if(j>1 .and. matrix(i,j-1) .and. labeled_matrix(i,j-1)==0) then
-                ! print *, "Checking i = ", i, ", j = ", j-1
-                call growcluster(matrix, labeled_matrix, i, j-1, label)
-            endif
             if(i<L .and. matrix(i+1,j) .and. labeled_matrix(i+1,j)==0) then
-                ! print *, "Checking i = ", i+1, ", j = ", j
                 call growcluster(matrix, labeled_matrix, i+1, j, label)
             endif
             if(j<L .and. matrix(i,j+1) .and. labeled_matrix(i,j+1)==0) then
-                ! print *, "Checking i = ", i, ", j = ", j+1
                 call growcluster(matrix, labeled_matrix, i, j+1, label)
+            endif
+            if(i>1 .and. matrix(i-1,j) .and. labeled_matrix(i-1,j)==0) then
+                call growcluster(matrix, labeled_matrix, i-1, j, label)
+            endif
+            if(j>1 .and. matrix(i,j-1) .and. labeled_matrix(i,j-1)==0) then
+                call growcluster(matrix, labeled_matrix, i, j-1, label)
             endif
        end subroutine
 

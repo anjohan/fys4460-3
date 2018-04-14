@@ -1,3 +1,5 @@
+build/
+debug_folder/
 *.o
 *.mod
 callgrind*

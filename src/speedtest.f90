@@ -1,7 +1,7 @@
 program speedtest
     use clusterlabeling
     implicit none
-    integer, parameter :: L = 10
+    integer, parameter :: L = 10000
     integer :: number_of_labels
     logical, dimension(:,:), allocatable :: matrix
     integer, dimension(:,:), allocatable :: labeled_matrix
@@ -16,30 +16,21 @@ program speedtest
     intfmtstring = '('//trim(Lstring)//'i10)'
     logicalfmtstring = '('//trim(Lstring)//'L3)'
 
+    allocate(labeled_matrix(L,L))
+    labeled_matrix(:,:) = 0
 
     call random_seed()
     call random_number(random_matrix)
 
-    allocate(labeled_matrix(L,L))
-    labeled_matrix(:,:) = 0
-
     matrix = random_matrix < p
-
-    ! do i=1,L
-    !     print *, matrix(i,:)
-    ! enddo
 
     call cpu_time(t0)
     call label(matrix, labeled_matrix, number_of_labels)
     call cpu_time(t1)
 
-    ! do i=1,L
-    !     print *, labeled_matrix(i,:)
-    ! enddo
-
-    write(*, fmt=logicalfmtstring) labeled_matrix
+    ! write(*, fmt=logicalfmtstring) labeled_matrix
     print *
-    write(*, fmt=intfmtstring) labeled_matrix
+    ! write(*, fmt=intfmtstring) labeled_matrix
 
     print *, "Labeling time = ", t1-t0, " s"
 
