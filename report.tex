@@ -1,0 +1,212 @@
+\documentclass[11pt,british,a4paper]{report}
+%\pdfobjcompresslevel=0
+\usepackage{pythontex}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[includeheadfoot,margin=0.8 in]{geometry}
+\usepackage{siunitx,physics,cancel,upgreek,varioref,listings,booktabs,pdfpages,ifthen,polynom,todonotes}
+\usepackage{minted}
+\usepackage[backend=biber]{biblatex}
+\DefineBibliographyStrings{english}{%
+      bibliography = {References},
+}
+\addbibresource{sources.bib}
+\usepackage{mathtools,upgreek,bigints}
+\usepackage{babel}
+\usepackage{graphicx}
+\graphicspath{{./}{./e/}}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb,epstopdf}
+\usepackage[T1]{fontenc}
+%\usepackage{fouriernc}
+% \usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+% \usepackage{inconsolata}
+%\usepackage{eulervm}
+%\usepackage{cmbright}
+%\usepackage{fontspec}
+%\usepackage{unicode-math}
+%\setmainfont{Tex Gyre Pagella}
+%\setmathfont{Tex Gyre Pagella Math}
+%\setmonofont{Tex Gyre Cursor}
+%\renewcommand*\ttdefault{txtt}
+\usepackage[scaled]{beramono}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{lastpage}
+\usepackage{microtype}
+\usepackage[linktoc=all, bookmarks=true, pdfauthor={Anders Johansson},pdftitle={FYS4460 Project 3}]{hyperref}
+\usepackage{tikz,pgfplots,pgfplotstable}
+\usepgfplotslibrary{colorbrewer}
+\usepgfplotslibrary{external}
+\tikzexternalize[prefix=data/]
+\pgfplotsset{cycle list/Set1}
+\pgfplotsset{compat=1.8}
+\renewcommand{\CancelColor}{\color{red}}
+\let\oldexp=\exp
+\renewcommand{\exp}[1]{\mathrm{e}^{#1}}
+\renewcommand{\Re}[1]{\mathfrak{Re}\ifthenelse{\equal{#1}{}}{}{\left(#1\right)}}
+\renewcommand{\Im}[1]{\mathfrak{Im}\ifthenelse{\equal{#1}{}}{}{\left(#1\right)}}
+\renewcommand{\i}{\mathrm{i}}
+\newcommand{\tittel}[1]{\title{#1 \vspace{-7ex}}\author{}\date{}\maketitle\thispagestyle{fancy}\pagestyle{fancy}\setcounter{page}{1}}
+
+% \newcommand{\deloppg}[2][]{\subsection*{#2) #1}\addcontentsline{toc}{subsection}{#2)}\refstepcounter{subsection}\label{#2}}
+% \newcommand{\oppg}[1]{\section*{Oppgave #1}\addcontentsline{toc}{section}{Oppgave #1}\refstepcounter{section}\label{oppg#1}}
+
+\labelformat{section}{#1}
+\labelformat{subsection}{exercise~#1}
+\labelformat{subsubsection}{paragraph~#1}
+\labelformat{equation}{equation~(#1)}
+\labelformat{figure}{figure~#1}
+\labelformat{table}{table~#1}
+
+\renewcommand{\footrulewidth}{\headrulewidth}
+
+%\setcounter{secnumdepth}{4}
+\renewcommand{\thesection}{Oppgave \arabic{section}}
+\renewcommand{\thesubsection}{\alph{subsection})}
+\renewcommand{\thesubsubsection}{\arabic{section}\alph{subsection}\roman{subsubsection})}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1em}
+
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+\lstset{rangeprefix=!/,
+    rangesuffix=/!,
+    includerangemarker=false}
+\renewcommand{\lstlistingname}{Kodesnutt}
+\lstset{showstringspaces=false,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{bluekeywords},
+    commentstyle=\color{greencomments},
+    numberstyle=\color{bluekeywords},
+    stringstyle=\color{redstrings},
+    breaklines=true,
+    texcl=true,
+    language=Fortran
+}
+\colorlet{DarkGrey}{white!20!black}
+\newcommand{\eqtag}[1]{\refstepcounter{equation}\tag{\theequation}\label{#1}}
+\hypersetup{hidelinks=True}
+
+\sisetup{detect-all}
+\sisetup{exponent-product = \cdot, output-product = \cdot,per-mode=symbol}
+% \sisetup{output-decimal-marker={,}}
+\sisetup{round-mode = off, round-precision=3}
+\sisetup{number-unit-product = \ }
+
+\allowdisplaybreaks[4]
+\fancyhf{}
+
+\rhead{Project 3}
+\rfoot{Page~\thepage{} of~\pageref{LastPage}}
+\lhead{FYS4460}
+
+%\definecolor{gronn}{rgb}{0.29, 0.33, 0.13}
+\definecolor{gronn}{rgb}{0, 0.5, 0}
+
+\newcommand{\husk}[2]{\tikz[baseline,remember picture,inner sep=0pt,outer sep=0pt]{\node[anchor=base] (#1) {\(#2\)};}}
+\newcommand{\artanh}[1]{\operatorname{artanh}{\qty(#1)}}
+\newcommand{\matrise}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+
+\pgfplotstableset{1000 sep={\,},
+                      assign column name/.style={/pgfplots/table/column name={\multicolumn{1}{c}{#1}}},
+                      every head row/.style={before row=\toprule,after row=\midrule},
+                      every last row/.style={after row=\bottomrule},
+                      columns/n/.style={column name={\(n^*\)},column type={r}},
+                      columns/N/.style={column name={\(N\)},sci},
+                      columns/logN/.style={column name={\(\log(N)\)}},
+                      columns/logn/.style={column name={\(\log(n^*)\)}}
+                      }
+
+\newread\infile
+
+%start
+\begin{document}
+\title{FYS4460: Project 1}
+\author{Anders Johansson}
+%\maketitle
+
+\begin{titlepage}
+%\includegraphics[width=\textwidth]{fysisk.pdf}
+\vspace*{\fill}
+\begin{center}
+\textsf{
+    \Huge \textbf{Project 3}\\\vspace{0.5cm}
+    \Large \textbf{FYS4460 - Disordered systems and percolation}\\
+    \vspace{8cm}
+    Anders Johansson\\
+    \today\\
+}
+\vspace{1.5cm}
+\includegraphics{uio.pdf}\\
+\vspace*{\fill}
+\end{center}
+\end{titlepage}
+\null
+\pagestyle{empty}
+\newpage
+
+\pagestyle{fancy}
+\setcounter{page}{1}
+
+
+
+%   __ _
+%  / _` |
+% | (_| |
+%  \__,_|
+%
+\subsection{}
+As my Easter procrastination was reading a Fortran book\cite{brainerd_guide_2015}, I decided to implement this project in Fortran. Since there is no \text{scipy.ndimage.measurements.label} in Fortran, the most important step was to implement an algorithm for labelling clusters in a binary matrix. Many high-perfomance algorithms exist for this task, and implementations of several of these in Fortran can be found on the internet. I, however, came up with a low-performance algorithm myself, and chose to implement it for fun.
+
+My algorithm goes through the entire grid, and for each site checks if it is occupied and unlabelled. If both these conditions are met, a recursive algorithm grows the entire cluster connected to this site.
+
+The main algorithm is the \lstinline{label} subroutine,
+\lstinputlisting[linerange={labelsubroutinestart-labelsubroutineend}]{lib/clusterlabelling.f90}
+where the recursive \lstinline{growcluster} subroutine simply checks if each neighbouring site is occupied and unlabelled,
+\lstinputlisting[linerange={growclustersubroutinestart-growclustersubroutineend}]{lib/clusterlabelling.f90}
+This algorithm is easily extensible to other geometries and connectivities, as the basic idea ``check all sites, check all neighbours'' is generally valid. Higher dimensions should also be unproblematic, although a generalisation of checking all neighbours would be useful to avoid tedious coding.
+
+Spanning cluster detection is done by checking if either the top and bottom rows or the left and right columns contain common elements. This is implemented by first going through one of the arrays and registering which labels are present, and then going through the other array and checking if any of the labels in this array were also present in the first,
+\lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{lib/clusterlabelling.f90}
+When the label of the spanning cluster has been found, the area is straightforwardly calculated by a command like \lstinline{count(labelled_matrix == spanning_label)}.
+A sample run gives
+\lstinputlisting{tmp/verification.txt}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\nocite{*}
+\printbibliography{}
+\addcontentsline{toc}{chapter}{\bibname}
+\end{document}

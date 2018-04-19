@@ -10,8 +10,13 @@ endif()
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall -Wextra -fopenmp")
 set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -fbounds-check")
 
-file(GLOB_RECURSE lib  lib/*.f90)
-add_executable(speedtest src/speedtest.f90 ${lib})
-add_executable(stuff src/stuff.f90 ${lib})
+add_library(utilities ${CMAKE_SOURCE_DIR}/lib/utilities.f90)
+add_library(clusterlabelling ${CMAKE_SOURCE_DIR}/lib/clusterlabelling.f90)
 
-message(STATUS ${CMAKE_Fortran_FLAGS})
+set(mylibraries utilities clusterlabelling)
+
+add_executable(verification ${CMAKE_SOURCE_DIR}/src/verification.f90)
+add_executable(stuff ${CMAKE_SOURCE_DIR}/src/stuff.f90)
+
+target_link_libraries(verification ${mylibraries})
+target_link_libraries(stuff ${mylibraries})

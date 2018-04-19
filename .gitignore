@@ -1,3 +1,5 @@
+tmp/
+report.pdf
 build/
 debug_folder/
 *.o
