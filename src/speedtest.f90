@@ -1,36 +1,27 @@
 program speedtest
     use clusterlabeling
+    use utilities
     implicit none
-    integer, parameter :: L = 10000
+    integer, parameter :: L = 10
     integer :: number_of_labels
     logical, dimension(:,:), allocatable :: matrix
     integer, dimension(:,:), allocatable :: labeled_matrix
-    real, dimension(L,L) :: random_matrix
     real, parameter :: p = 0.5
-    integer :: i,j
     real :: t0,t1
 
-    character(len=:), allocatable :: intfmtstring, logicalfmtstring
-    character(len=20) :: Lstring
-    write(unit=Lstring,fmt="(i0)") L
-    intfmtstring = '('//trim(Lstring)//'i10)'
-    logicalfmtstring = '('//trim(Lstring)//'L3)'
-
-    allocate(labeled_matrix(L,L))
-    labeled_matrix(:,:) = 0
-
-    call random_seed()
-    call random_number(random_matrix)
-
-    matrix = random_matrix < p
+    matrix = create_binary_matrix(p,L)
 
     call cpu_time(t0)
     call label(matrix, labeled_matrix, number_of_labels)
     call cpu_time(t1)
 
-    ! write(*, fmt=logicalfmtstring) labeled_matrix
-    print *
-    ! write(*, fmt=intfmtstring) labeled_matrix
+    write(*,*) "Binary matrix:"
+    write(*, fmt='('//stringfromint(L)//'L4)') matrix
+
+    write(*,*) "Labeled matrix:"
+    write(*, fmt='('//stringfromint(L)//'i4)') labeled_matrix
+
+    write(*,*) "Spanning cluster:", find_spanning_cluster(labeled_matrix, number_of_labels)
 
     print *, "Labeling time = ", t1-t0, " s"
 
