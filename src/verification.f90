@@ -1,4 +1,4 @@
-program speedtest
+program verification
     use clusterlabelling
     use utilities
     implicit none
@@ -26,4 +26,4 @@ program speedtest
     write(*,fmt="(ai0)") "Spanning cluster: ", spanning_label
     write(*,fmt="(ai0)") "Spanning cluster area:", count(labelled_matrix == spanning_label)
 
-end program speedtest
+end program verification

@@ -161,7 +161,7 @@
 %  \__,_|
 %
 \subsection{}
-As my Easter procrastination was reading a Fortran book\cite{brainerd_guide_2015}, I decided to implement this project in Fortran. Since there is no \text{scipy.ndimage.measurements.label} in Fortran, the most important step was to implement an algorithm for labelling clusters in a binary matrix. Many high-perfomance algorithms exist for this task, and implementations of several of these in Fortran can be found on the internet. I, however, came up with a low-performance algorithm myself, and chose to implement it for fun.
+As my Easter procrastination was reading a Fortran book\cite{brainerd_guide_2015}, I decided to implement this project in Fortran. Since there is no \lstinline{scipy.ndimage.measurements.label} in Fortran, the most important step was to implement an algorithm for labelling clusters in a binary matrix. Many high-perfomance algorithms exist for this task, and implementations of several of these in Fortran can be found on the internet. I, however, came up with a low-performance algorithm myself, and chose to implement it for fun.
 
 My algorithm goes through the entire grid, and for each site checks if it is occupied and unlabelled. If both these conditions are met, a recursive algorithm grows the entire cluster connected to this site.
 
