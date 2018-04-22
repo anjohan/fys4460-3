@@ -7,8 +7,8 @@ program verification
     logical, dimension(:,:), allocatable :: matrix
     integer, dimension(:,:), allocatable :: labelled_matrix
     integer :: spanning_label
-    real, parameter :: p = 0.585
-    real :: t0,t1
+    real(kind=dp), parameter :: p = 0.585
+    real(kind=dp) :: t0,t1
 
     matrix = create_binary_matrix(p,L)
 
@@ -24,6 +24,6 @@ program verification
 
     spanning_label = find_spanning_cluster(labelled_matrix, number_of_labels)
     write(*,fmt="(ai0)") "Spanning cluster: ", spanning_label
-    write(*,fmt="(ai0)") "Spanning cluster area:", count(labelled_matrix == spanning_label)
+    write(*,fmt="(ai0)") "Spanning cluster area: ", count(labelled_matrix == spanning_label)
 
 end program verification

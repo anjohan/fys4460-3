@@ -20,3 +20,6 @@ add_executable(stuff ${CMAKE_SOURCE_DIR}/src/stuff.f90)
 
 target_link_libraries(verification ${mylibraries})
 target_link_libraries(stuff ${mylibraries})
+
+add_executable(b ${CMAKE_SOURCE_DIR}/src/b.f90)
+target_link_libraries(b ${mylibraries})
