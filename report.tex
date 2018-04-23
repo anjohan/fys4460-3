@@ -40,7 +40,7 @@
 \usepackage{tikz,pgfplots,pgfplotstable}
 \usepgfplotslibrary{colorbrewer}
 \usepgfplotslibrary{external}
-\tikzexternalize[prefix=data/]
+\tikzexternalize[prefix=tmp/]
 \pgfplotsset{cycle list/Set1}
 \pgfplotsset{compat=1.8}
 \renewcommand{\CancelColor}{\color{red}}
@@ -173,10 +173,100 @@ This algorithm is easily extensible to other geometries and connectivities, as t
 
 Spanning cluster detection is done by checking if either the top and bottom rows or the left and right columns contain common elements. This is implemented by first going through one of the arrays and registering which labels are present, and then going through the other array and checking if any of the labels in this array were also present in the first,
 \lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{lib/clusterlabelling.f90}
-When the label of the spanning cluster has been found, the area is straightforwardly calculated by a command like \lstinline{count(labelled_matrix == spanning_label)}.
+The algorithm assumes that there is only one spanning cluster. This should be unproblematic, as it is higly unlikely that two clusters stretch from one side of the grid to the other without touching each other and thus being the same cluster. When the label of the spanning cluster has been found, the area is straightforwardly calculated by a command like \lstinline{count(labelled_matrix == spanning_label)}.
 A sample run gives
 \lstinputlisting{tmp/verification.txt}
 
+The functions \(\Pi(p,L)\) and \(P(p,L)\) are estimated by repeating a simulation multiple times. \(\Pi(p,L)\) is the number of repetitions which lead to a spanning cluster divided by the total number of repetitions, while \(P(p,L)\) is estimated by the average size of the spanning cluster (or zero if there isn't one), divided by the total size of the grid, \(L^2\). Averaging over many cycles is trivially parallelisable with OpenMP.
+
+%  _
+% | |__
+% | '_ \
+% | |_) |
+% |_.__/
+%
+\subsection{}
+The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. A variety of system sizes \(L\) and numbers of samples were used for probabilities in the range from zero to one.
+\begin{figure}[tbh]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            legend style={draw=none,at={(1.0,0.8)}},
+            legend cell align=left,
+            thick,
+            axis lines=middle,
+            xlabel style={anchor=north west},
+            ylabel style={anchor=east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(p\)},
+            ylabel={\(\Pi(p,L)\)}
+            ]
+                \foreach \systemsize in {2,4,8,16,32,64,128} {
+                    \addplot+[mark=none] table {tmp/PI_1000_\systemsize.dat};
+                    \addlegendentryexpanded{\(L = \num{\systemsize} \)};
+                }
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Probability of having a spanning cluster as a function of the probability \(p\) for a site to permit transport, for several system sizes. As the system size increases, the fluctuations quickly disappear. Additionally, the function shape approaches a step function, with a clearly defined critical probability \(p_\mathrm{c}\). Averaged over \(\num{1000}\) Monte Carlo samples, see also~\vref{fig:PIs}.}%
+    \label{fig:PIL}
+\end{figure}
+\begin{figure}[tbh]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            legend style={draw=none,at={(1.0,0.65)}},
+            legend cell align=left,
+            thick,
+            axis lines=middle,
+            xlabel style={anchor=north west},
+            ylabel style={anchor=east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(p\)},
+            ylabel={\(\Pi(p,L)\)}
+            ]
+                \foreach \systemsize in {2,128} {
+                    \foreach \numsamples in {10,100,1000}{
+                        \addplot+[mark=none] table {tmp/PI_\numsamples_\systemsize.dat};
+                        \addlegendentryexpanded{\(L = \systemsize\), \(\num{\numsamples}\) samples};
+                    }
+                }
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Comparison of the spanning cluster probability for the largest and smallest system sizes for different numbers of Monte Carlo cycles. The graphs show that large systems give good results with very few samples, while small systems require a large number of samples to give good results with little noise.}%
+    \label{fig:PIs}
+\end{figure}
+\begin{figure}[tbh]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            legend style={draw=none,at={(1.0,0.7)}},
+            legend cell align=left,
+            thick,
+            axis lines=middle,
+            xlabel style={anchor=north west},
+            ylabel style={anchor=east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(p\)},
+            ylabel={\(P(p,L)\)}
+            ]
+                \foreach \systemsize in {2,4,8,16,32,64,128} {
+                    \addplot+[mark=none] table {tmp/P_1000_\systemsize.dat};
+                    \addlegendentryexpanded{\(L = \num{\systemsize} \)};
+                }
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Spanning cluster density as a function of the probability \(p\) for a site to permit transport, for several system sizes, with \(\num{1000}\) samples. For large systems, the density has a clear jump when it becomes probable to have a spanning cluster. Beyond this value, the density increases linearly as the size of the spanning cluster increases.}%
+    \label{fig:PL}
+\end{figure}
 
 
 

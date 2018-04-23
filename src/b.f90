@@ -8,6 +8,7 @@ program b
     real(kind=dp), dimension(:), allocatable :: P, PI
     real(kind=dp), dimension(:), allocatable :: probabilities
     character(len=:), allocatable :: fmtstring, Pfile, PIfile, filebase
+    integer :: Punit, PIunit
 
     Ls = [ (2**i, i=1, 7) ]
     sample_sizes = [10, 100, 1000] !, 2000]
@@ -29,14 +30,15 @@ program b
             filebase = stringfromint(number_of_samples) // "_" // stringfromint(L) // ".dat"
             Pfile = "tmp/P_" // filebase
             PIfile = "tmp/PI_" // filebase
-            open(unit=11, file=Pfile, status="replace")
-            open(unit=12, file=PIfile, status="replace")
+
+            open(newunit=Punit, file=Pfile, status="replace")
+            open(newunit=PIunit, file=PIfile, status="replace")
             do k = 1, number_of_probabilities
-                write(unit=11,fmt=fmtstring) probabilities(k), P(k)
-                write(unit=12,fmt=fmtstring) probabilities(k), PI(k)
+                write(unit=Punit,fmt=fmtstring) probabilities(k), P(k)
+                write(unit=PIunit,fmt=fmtstring) probabilities(k), PI(k)
             end do
-            close(unit=11)
-            close(unit=12)
+            close(unit=Punit)
+            close(unit=PIunit)
         end do
     end do
 
