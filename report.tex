@@ -268,6 +268,46 @@ The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of t
     \label{fig:PL}
 \end{figure}
 
+\subsection{}
+The same functions as in the previous exercise were used to calculate \(P(p,L)\) for probabilities going from slightly above the critical probability, \(p_c\), to \(\SI{20}{\percent}\) above \(p_c\). A lower bound of exactly \(p_c\) makes the computer complain when attempting to calculate \(\ln(p-p_c)\).
+
+According to the exercise description, the spanning cluster density \(P(p,L)\) should be proportional to \(\qty(p-p_c)^\beta\) for some exponent \(\beta\) for \(p>p_c\). The exponent is found by doing linear regression on a log-log scale, as
+\[
+    P(p,L) = a\qty(p-p_c)^\beta \implies \log_{10}(P(p,L)) = \log_{10}(a) + \beta\log_{10}(p-p_c).
+\]
+\openin\infile=tmp/c_beta.dat
+\read\infile to \mybeta
+\closein\infile
+The exponent is therefore the slope of \(\log_{10}(P(p,L))\) as a function of \(\log_{10}(p-p_c)\). \Vref{fig:cP} shows the simulation results together with the theoretical model with \(\beta=\num{\mybeta}\) found from linear regression.
+
+Fortran does, unfortunately, not have an \lstinline{np.polyfit} function, so the linear fit was done manually by calling a least squares subroutine from LAPACK.
+
+\begin{figure}[tbh]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            legend style={draw=none,at={(1.0,0.7)}},
+            legend cell align=left,
+            thick,
+            %axis lines=middle,
+            xlabel style={anchor=west},
+            ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(p\)},
+            ylabel={\(P(p,L)\)}
+            ]
+            \addplot+[mark=none] table[x index=0, ,y index=1] {tmp/c_P.dat};
+            \addlegendentryexpanded{Simulation results};
+            \addplot+[mark=none] table[x index=0, ,y index=2] {tmp/c_P.dat};
+            \addlegendentryexpanded{\(c\qty(p-p_c)^{\num{\mybeta}}\)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{256}\) and \(\num{1000}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. A fairly good fit is found, at least for probabilities further away from the critical probability.}%
+    \label{fig:cP}
+\end{figure}
 
 
 
