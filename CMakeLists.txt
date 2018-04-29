@@ -7,11 +7,13 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall -Wextra -fopenmp")
-set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -fbounds-check")
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall -Wextra -fopenmp -O2")
+set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS_DEBUG} -O0 -g -fcheck=all")
 
 add_library(utilities ${CMAKE_SOURCE_DIR}/lib/utilities.f90)
 add_library(clusterlabelling ${CMAKE_SOURCE_DIR}/lib/clusterlabelling.f90)
+
+add_dependencies(clusterlabelling utilities)
 
 set(mylibraries utilities clusterlabelling lapack)
 
@@ -20,6 +22,6 @@ function(addexewithlibs name)
     target_link_libraries(${name} ${mylibraries})
 endfunction()
 
-foreach(exe verification stuff b c)
+foreach(exe verification speedtest stuff b c)
     addexewithlibs(${exe})
 endforeach()

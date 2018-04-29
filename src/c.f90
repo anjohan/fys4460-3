@@ -5,18 +5,16 @@ program c
     implicit none
 
     integer :: i,j,k, fileunit
-    integer, parameter :: L = 256, num_probabilities = 1000, num_samples = 100
+    integer, parameter :: L = 512, num_probabilities = 100, num_samples = 1000
     real(kind=dp), dimension(:), allocatable :: probabilities, spanning_densities
     real(kind=dp), dimension(:), allocatable :: estimated_densities
     character(len=:), allocatable :: fmtstring, filename
     real(kind=dp) :: beta, const
 
-    allocate(spanning_densities(num_probabilities))
-    probabilities = linspace(1.000000000001d0*pc, 1.2d0*pc, num_probabilities)
+    probabilities = linspace(1.000000001d0*pc, 1.1d0*pc, num_probabilities)
 
-    do i=1, num_probabilities
-        spanning_densities(i) = spanning_density(probabilities(i), L, num_samples)
-    end do
+    spanning_densities = [ (spanning_density(probabilities(i), L, num_samples), &
+                            i = 1, num_probabilities) ]
 
     call linfit(log10(probabilities - pc), log10(spanning_densities), beta, const)
 

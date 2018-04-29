@@ -280,7 +280,9 @@ According to the exercise description, the spanning cluster density \(P(p,L)\) s
 \closein\infile
 The exponent is therefore the slope of \(\log_{10}(P(p,L))\) as a function of \(\log_{10}(p-p_c)\). \Vref{fig:cP} shows the simulation results together with the theoretical model with \(\beta=\num{\mybeta}\) found from linear regression.
 
-Fortran does, unfortunately, not have an \lstinline{np.polyfit} function, so the linear fit was done manually by calling a least squares subroutine from LAPACK.
+Fortran does, unfortunately, not have an \lstinline{np.polyfit} function, so the linear fit was done manually by calling a least squares subroutine from LAPACK.\@ \Vref{fig:cP} shows the result.
+
+A fairly poor fit is found for probabilities which are either close to or far away from the critical probability. The error for probabilities close to the critical probability is due to finite size effects; the theoretical model is exactly zero, while the finite size of the lattice causes the spanning cluster density to become non-zero even when \(p\) is slightly smaller than \(p_c\). On the opposite side of the spectrum, the deviation is also large when \(p\gg p_c\) due to the limited range of validity for the theoretical model.
 
 \begin{figure}[tbh]
     \centering
@@ -297,7 +299,8 @@ Fortran does, unfortunately, not have an \lstinline{np.polyfit} function, so the
             enlarge y limits=0.1,
             width=6in, height=3in,
             xlabel={\(p\)},
-            ylabel={\(P(p,L)\)}
+            ylabel={\(P(p,L)\)},
+            xtick distance=0.01
             ]
             \addplot+[mark=none] table[x index=0, ,y index=1] {tmp/c_P.dat};
             \addlegendentryexpanded{Simulation results};
@@ -305,7 +308,7 @@ Fortran does, unfortunately, not have an \lstinline{np.polyfit} function, so the
             \addlegendentryexpanded{\(c\qty(p-p_c)^{\num{\mybeta}}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{256}\) and \(\num{1000}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. A fairly good fit is found, at least for probabilities further away from the critical probability.}%
+    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{256}\) and \(\num{1000}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. }%
     \label{fig:cP}
 \end{figure}
 
