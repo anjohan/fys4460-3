@@ -1,6 +1,6 @@
 \documentclass[11pt,british,a4paper]{report}
 %\pdfobjcompresslevel=0
-\usepackage{pythontex}
+%\usepackage{pythontex}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage[includeheadfoot,margin=0.8 in]{geometry}
 \usepackage{siunitx,physics,cancel,upgreek,varioref,listings,booktabs,pdfpages,ifthen,polynom,todonotes}
@@ -36,6 +36,7 @@
 \usepackage{textcomp}
 \usepackage{lastpage}
 \usepackage{microtype}
+\usepackage{subcaption}
 \usepackage[linktoc=all, bookmarks=true, pdfauthor={Anders Johansson},pdftitle={FYS4460 Project 3}]{hyperref}
 \usepackage{tikz,pgfplots,pgfplotstable}
 \usepgfplotslibrary{colorbrewer}
@@ -186,60 +187,64 @@ The functions \(\Pi(p,L)\) and \(P(p,L)\) are estimated by repeating a simulatio
 % |_.__/
 %
 \subsection{}
-The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. A variety of system sizes \(L\) and numbers of samples were used for probabilities in the range from zero to one.
-\begin{figure}[tbh]
+The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. A variety of system sizes \(L\) and numbers of samples were used for probabilities in the range from zero to one. See~\vref{fig:PI} and~\vref{fig:PL}.
+\begin{figure}[bth]
     \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            legend style={draw=none,at={(1.0,0.8)}},
-            legend cell align=left,
-            thick,
-            axis lines=middle,
-            xlabel style={anchor=north west},
-            ylabel style={anchor=east},
-            %axis y discontinuity=crunch,
-            enlarge x limits=0.05,
-            enlarge y limits=0.1,
-            width=6in, height=3in,
-            xlabel={\(p\)},
-            ylabel={\(\Pi(p,L)\)}
-            ]
-                \foreach \systemsize in {2,4,8,16,32,64,128} {
-                    \addplot+[mark=none] table {tmp/PI_1000_\systemsize.dat};
-                    \addlegendentryexpanded{\(L = \num{\systemsize} \)};
-                }
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Probability of having a spanning cluster as a function of the probability \(p\) for a site to permit transport, for several system sizes. As the system size increases, the fluctuations quickly disappear. Additionally, the function shape approaches a step function, with a clearly defined critical probability \(p_\mathrm{c}\). Averaged over \(\num{1000}\) Monte Carlo samples, see also~\vref{fig:PIs}.}%
-    \label{fig:PIL}
-\end{figure}
-\begin{figure}[tbh]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            legend style={draw=none,at={(1.0,0.65)}},
-            legend cell align=left,
-            thick,
-            axis lines=middle,
-            xlabel style={anchor=north west},
-            ylabel style={anchor=east},
-            %axis y discontinuity=crunch,
-            enlarge x limits=0.05,
-            enlarge y limits=0.1,
-            width=6in, height=3in,
-            xlabel={\(p\)},
-            ylabel={\(\Pi(p,L)\)}
-            ]
-                \foreach \systemsize in {2,128} {
-                    \foreach \numsamples in {10,100,1000}{
-                        \addplot+[mark=none] table {tmp/PI_\numsamples_\systemsize.dat};
-                        \addlegendentryexpanded{\(L = \systemsize\), \(\num{\numsamples}\) samples};
+    \begin{subfigure}{\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                legend style={draw=none,at={(1.0,0.8)}},
+                legend cell align=left,
+                thick,
+                axis lines=middle,
+                xlabel style={anchor=north west},
+                ylabel style={anchor=east},
+                %axis y discontinuity=crunch,
+                enlarge x limits=0.05,
+                enlarge y limits=0.1,
+                width=6in, height=3in,
+                xlabel={\(p\)},
+                ylabel={\(\Pi(p,L)\)}
+                ]
+                    \foreach \systemsize in {2,4,8,16,32,64,128} {
+                        \addplot+[mark=none] table {tmp/PI_1000_\systemsize.dat};
+                        \addlegendentryexpanded{\(L = \num{\systemsize} \)};
                     }
-                }
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Comparison of the spanning cluster probability for the largest and smallest system sizes for different numbers of Monte Carlo cycles. The graphs show that large systems give good results with very few samples, while small systems require a large number of samples to give good results with little noise.}%
-    \label{fig:PIs}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Different system sizes. As \(L\) increases, the function shape approaches a step function, with a clearly defined critical probability \(p_\mathrm{c}\). Averaged over \(\num{1000}\) Monte Carlo samples.}%
+        \label{fig:PI}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                legend style={draw=none,at={(1.0,0.65)}},
+                legend cell align=left,
+                thick,
+                axis lines=middle,
+                xlabel style={anchor=north west},
+                ylabel style={anchor=east},
+                %axis y discontinuity=crunch,
+                enlarge x limits=0.05,
+                enlarge y limits=0.1,
+                width=6in, height=3in,
+                xlabel={\(p\)},
+                ylabel={\(\Pi(p,L)\)}
+                ]
+                    \foreach \systemsize in {2,128} {
+                        \foreach \numsamples in {10,100,1000}{
+                            \addplot+[mark=none] table {tmp/PI_\numsamples_\systemsize.dat};
+                            \addlegendentryexpanded{\(L = \systemsize\), \(\num{\numsamples}\) samples};
+                        }
+                    }
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Different numbers of Monte Carlo cycles for the largest and smallest system sizes simulated.}%
+    \end{subfigure}
+    \caption{Probability of having a spanning cluster, compared both for different system sizes and for different numbers of Monte Carlo cycles. The graphs show that large systems give good results with very few samples, while small systems require a large number of samples to give good results with little noise.}
+    \label{fig:PI}
 \end{figure}
 \begin{figure}[tbh]
     \centering
@@ -313,6 +318,72 @@ A fairly poor fit is found for probabilities which are either close to or far aw
 \end{figure}
 
 
+%      _
+%   __| |
+%  / _` |
+% | (_| |
+%  \__,_|
+%
+\subsection{}
+The cumulative distribution and the derivative, which approximates the probability distribution, were straightforwardly calculated using
+\lstinputlisting[language=Python,rangeprefix=\#\ /,rangesuffix=/\ \#, linerange={Pstart-Pend}]{src/d.py}
+and the results are shown in~\vref{fig:d}.
+\openin\infile=tmp/d_a.dat
+\read\infile to\myslope
+\closein\infile
+\begin{figure}[tbh]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                legend style={draw=none,at={(1.0,0.7)}},
+                legend cell align=left,
+                thick,
+                axis lines=middle,
+                %xlabel style={anchor=north},
+                %ylabel style={anchor=south east},
+                %axis y discontinuity=crunch,
+                xmin=0,
+                enlarge x limits=0.05,
+                enlarge y limits=0.1,
+                width=3.4in, height=3in,
+                xlabel={\(z\)},
+                ylabel={\(P(z)\)},
+                ]
+                \addplot+[mark=none] table {tmp/d_P.dat};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Cumulative distribution.}%
+    \end{subfigure}\quad
+    \begin{subfigure}[b]{0.45\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                legend style={draw=none,at={(1.1,0.8)},anchor=east},
+                legend cell align=left,
+                thick,
+                axis lines=middle,
+                %xlabel style={anchor=north},
+                ylabel style={anchor=east},
+                %axis y discontinuity=crunch,
+                xmin=0,
+                ymax=10,
+                enlarge x limits=0.05,
+                enlarge y limits=0.1,
+                width=3.4in, height=3in,
+                xlabel={\(z\)},
+                ylabel={\(f(z)\)},
+                ]
+                \addplot+[mark=none] table {tmp/d_f.dat};
+                \addlegendentryexpanded{Simulation result.};
+                \addplot+[mark=none] table {tmp/d_fapprox.dat};
+                \addlegendentryexpanded{Approximation \(z^{\num{\myslope}}\)};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Probability distribution.}%
+        \label{fig:d}
+    \end{subfigure}
+    \caption{The result of raising a uniform distribution between \(0\) and \(1\) to the power \(-2\). While the cumulative distribution looks reasonable, it is clear that some sort of averaging over bins is necessary in order to get a reasonable probability distribution.}
+\end{figure}
 
 
 
