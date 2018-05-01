@@ -5,7 +5,7 @@ program c
     implicit none
 
     integer :: i,j,k, fileunit
-    integer, parameter :: L = 512, num_probabilities = 100, num_samples = 1000
+    integer, parameter :: L = 512, num_probabilities = 100, num_samples = 100
     real(kind=dp), dimension(:), allocatable :: probabilities, spanning_densities
     real(kind=dp), dimension(:), allocatable :: estimated_densities
     character(len=:), allocatable :: fmtstring, filename
