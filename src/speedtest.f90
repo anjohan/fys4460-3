@@ -2,7 +2,7 @@ program speedtest
     use clusterlabelling
     use utilities
     implicit none
-    integer, parameter :: L = 10000
+    integer, parameter :: L = 1000
     integer :: number_of_labels
     logical, dimension(:,:), allocatable :: matrix
     integer, dimension(:,:), allocatable :: labelled_matrix
