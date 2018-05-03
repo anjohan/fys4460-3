@@ -4,7 +4,8 @@ program test
     implicit none
     character(len=:), allocatable :: string
     integer, dimension(:,:), allocatable :: intarray
-    integer :: i,j
+    integer :: i,j, fileunit
+    real(kind=dp), dimension(:), allocatable :: bin_mids, n
 
     string = stringfromint(123)
     print *, string
@@ -18,5 +19,10 @@ program test
     write(*,fmt="(*(i0,x,i0,/))") [ ([intarray(i,1),intarray(i,2)], i=1,10) ]
     write(*,*) spanning_probability(0.59d0,10,100)
 
-    call cluster_number_density(1.0d0,5,1)
+    call cluster_number_density(0.59275d0, 128, 300, bin_mids, n)
+    open(newunit=fileunit, file="tmp/stuff.txt", status="replace")
+    do i=1, size(bin_mids)
+        write(unit=fileunit,fmt="(f0.3,x,f0.3)") bin_mids(i), n(i)
+    end do
+    close(fileunit)
 end program test
