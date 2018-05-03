@@ -37,10 +37,12 @@
 \usepackage{lastpage}
 \usepackage{microtype}
 \usepackage{subcaption}
+\usepackage{luacode}
 \usepackage[linktoc=all, bookmarks=true, pdfauthor={Anders Johansson},pdftitle={FYS4460 Project 3}]{hyperref}
 \usepackage{tikz,pgfplots,pgfplotstable}
 \usepgfplotslibrary{colorbrewer}
 \usepgfplotslibrary{external}
+\tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
 \tikzexternalize[prefix=tmp/]
 \pgfplotsset{cycle list/Set1}
 \pgfplotsset{compat=1.8}
@@ -312,7 +314,7 @@ A fairly poor fit is found for probabilities which are either close to or far aw
             \addlegendentryexpanded{\(c\qty(p-p_c)^{\num{\mybeta}}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{256}\) and \(\num{1000}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. }%
+    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{512}\) and \(\num{100}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. }%
     \label{fig:cP}
 \end{figure}
 
@@ -384,6 +386,59 @@ and the results are shown in~\vref{fig:d}.
     \label{fig:d}
 \end{figure}
 
+
+
+%   ___
+%  / _ \
+% |  __/
+%  \___|
+%
+\subsection{}
+BLAHBLAH
+
+
+%   __
+%  / _|
+% | |_
+% |  _|
+% |_|
+%
+\subsection{}
+The cluster number density algorithm from the previous exercise was used.
+\tikzexternaldisable
+\begin{figure}[tbh]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmode=log, ymode=log,
+            ymin=0.000000001,
+            legend style={draw=none,at={(0.9,0.9)}},
+            legend cell align=left,
+            thick,
+            %axis lines=middle,
+            xlabel style={anchor=west},
+            ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(s\)},
+            ylabel={\(n(s,p)\)},
+            ]
+            \begin{luacode*}
+                local i = 0
+                for line in io.lines("tmp/f_p.dat") do
+                    i = i + 1
+                    print(line)
+                    txt = string.format("\\addplot+[mark=none] table {tmp/f_p_%d.dat}; \\addlegendentryexpanded{\\(p = \\num{%s}\\)};", i, line)
+                    tex.sprint(txt)
+                end
+            \end{luacode*}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{BLAHBLAH}%
+    \label{fig:f}
+\end{figure}
 
 
 

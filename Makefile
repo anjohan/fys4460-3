@@ -4,8 +4,10 @@ all:
 	@mkdir -p build
 	@cd build; cmake ..; make
 	make report.pdf
-report.pdf: report.tex sources.bib tmp/verification.txt tmp/P_100_64.dat tmp/c_P.dat tmp/d_a.dat
+report.pdf: report.tex sources.bib tmp/verification.txt tmp/P_100_64.dat tmp/c_P.dat tmp/d_a.dat tmp/f_p.dat tmp/f_p_1.dat
 	latexmk -pdflua -shell-escape report
+tmp/f_p.dat tmp/f_p_1.dat: build/f
+	./build/f
 tmp/d_a.dat: src/d.py
 	python src/d.py
 tmp/c_P.dat: build/c
