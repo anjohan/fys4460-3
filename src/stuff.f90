@@ -17,4 +17,6 @@ program test
 
     write(*,fmt="(*(i0,x,i0,/))") [ ([intarray(i,1),intarray(i,2)], i=1,10) ]
     write(*,*) spanning_probability(0.59d0,10,100)
+
+    call cluster_number_density(1.0d0,5,1)
 end program test
