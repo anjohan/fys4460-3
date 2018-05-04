@@ -9,14 +9,13 @@ program f
 
     L = 512
     num_samples = 100
-    num_probabilities = 5
-    probabilities = [0.45d0, 0.50d0, 0.54d0, 0.57d0, 0.58d0, &
-                     0.60d0, 0.62d0, 0.65d0, 0.70d0, 0.75d0]
+    probabilities = [0.45d0, 0.55d0, 0.57d0, 0.58d0, &
+                     0.60d0, 0.62d0, 0.65d0, 0.75d0]
     num_probabilities = size(probabilities)
 
     open(newunit=fileunit, file="tmp/f_p.dat", status="replace")
     do i=1, num_probabilities
-        write(unit=fileunit, fmt="(f0.4)") probabilities(i)
+        write(unit=fileunit, fmt="(f0.2)") probabilities(i)
     end do
     close(unit=fileunit)
 
@@ -33,7 +32,4 @@ program f
         end associate
     end do
     !$omp end parallel do
-
-
-
 end program f
