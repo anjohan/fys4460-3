@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(hello)
-enable_language(Fortran)
+enable_language(C Fortran)
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
@@ -13,10 +13,11 @@ set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_DEBU
 
 add_library(utilities ${CMAKE_SOURCE_DIR}/lib/utilities.f90)
 add_library(clusterlabelling ${CMAKE_SOURCE_DIR}/lib/clusterlabelling.f90)
+add_library(hk ${CMAKE_SOURCE_DIR}/lib/hk.c)
 
-add_dependencies(clusterlabelling utilities)
+add_dependencies(clusterlabelling utilities hk)
 
-set(mylibraries utilities clusterlabelling lapack)
+set(mylibraries utilities clusterlabelling lapack hk)
 
 function(addexewithlibs name)
     add_executable(${name} ${CMAKE_SOURCE_DIR}/src/${name}.f90)
