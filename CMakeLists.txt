@@ -7,9 +7,17 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wall -Wextra")
-set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_RELEASE} -Ofast")
-set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_DEBUG} -O0 -g -fcheck=all")
+set(generalflags "-Wall -Wextra")
+set(speedflags "-Ofast")
+set(debugflags "-O0 -g")
+
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${generalflags}")
+set(CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_RELEASE} ${generalflags} ${speedflags}")
+set(CMAKE_Fortran_FLAGS_DEBUG "${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_DEBUG} ${generalflags} ${debugflags} -fcheck=all")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${generalflags}")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_RELEASE} ${generalflags} ${speedflags}")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_DEBUG} ${generalflags} ${debugflags}")
 
 add_library(utilities ${CMAKE_SOURCE_DIR}/lib/utilities.f90)
 add_library(clusterlabelling ${CMAKE_SOURCE_DIR}/lib/clusterlabelling.f90)
