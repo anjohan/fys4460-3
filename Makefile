@@ -9,7 +9,7 @@ report.makefile: $(reportdeps)
 	lualatex -shell-escape report.tex
 report.pdf: report.makefile $(reportdeps)
 	make -j4 -f report.makefile
-	latexmk -pdflua -shell-escape report
+	./latexrun --latex-cmd lualatex --bibtex-cmd biber report.tex
 tmp/g_4.dat: build/g
 	./build/g
 tmp/f_p.dat: build/f
@@ -27,7 +27,7 @@ debug:
 	@cd debug_folder; cmake -DCMAKE_BUILD_TYPE=Debug ..; make
 clean:
 	latexmk -c
-	rm -rf __pycache__ pythontex-files-report *.pytxcode *.auxlock *.run.xml data *.bbl report.pdf tmp/report-figure*
+	rm -rf __pycache__ pythontex-files-report *.pytxcode *.auxlock *.run.xml data *.bbl report.pdf tmp/report-figure* *.figlist *.makefile latex.out
 force:
 	touch $(reportdeps)
 	make report.pdf
