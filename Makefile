@@ -1,4 +1,4 @@
-reportdeps =  report.tex sources.bib tmp/verification.txt tmp/P_100_64.dat tmp/c_P.dat tmp/d_a.dat tmp/f_p.dat tmp/f_p_1.dat
+reportdeps =  report.tex sources.bib tmp/verification.txt tmp/P_100_64.dat tmp/c_P.dat tmp/d_a.dat tmp/f_p.dat tmp/g_4.dat
 MAKEFLAGS += --silent
 all:
 	@mkdir -p tmp
@@ -10,7 +10,9 @@ report.makefile: $(reportdeps)
 report.pdf: report.makefile $(reportdeps)
 	make -j4 -f report.makefile
 	latexmk -pdflua -shell-escape report
-tmp/f_p.dat tmp/f_p_1.dat: build/f
+tmp/g_4.dat: build/g
+	./build/g
+tmp/f_p.dat: build/f
 	./build/f
 tmp/d_a.dat: src/d.py
 	python src/d.py
@@ -26,6 +28,9 @@ debug:
 clean:
 	latexmk -c
 	rm -rf __pycache__ pythontex-files-report *.pytxcode *.auxlock *.run.xml data *.bbl report.pdf tmp/report-figure*
+force:
+	touch $(reportdeps)
+	make report.pdf
 clean-all:
 	make clean
 	rm -rf build debug debug_folder tmp
