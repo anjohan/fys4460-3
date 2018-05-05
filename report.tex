@@ -43,7 +43,7 @@
 \usepgfplotslibrary{colorbrewer}
 \usepgfplotslibrary{external}
 \tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
-\tikzexternalize[prefix=tmp/]
+\tikzexternalize[prefix=tmp/, mode=list and make]
 \pgfplotsset{cycle list/Dark2}
 \pgfplotsset{compat=1.8}
 \renewcommand{\CancelColor}{\color{red}}
@@ -424,7 +424,7 @@ Due to the skewed distribution of cluster sizes, with many being small and few l
 %
 \subsection{}
 The cluster number density algorithm from the previous exercise was used. \Vref{fig:f} shows the result for various values of \(p\) for a fixed system size.
-\tikzexternaldisable
+%\tikzexternaldisable
 \begin{figure}[tbh]
     \centering
     \begin{tikzpicture}
@@ -449,7 +449,7 @@ The cluster number density algorithm from the previous exercise was used. \Vref{
                 for line in io.lines("tmp/f_p.dat") do
                     i = i + 1
                     print(line)
-                    txt = string.format("\\addplot+[mark=none] table {tmp/f_p_%d.dat}; \\addlegendentryexpanded{\\(p = \\num{%s}\\)};", i, line)
+                    txt = "\\addplot+[mark=none] table {tmp/f_p_" .. tostring(i) .. ".dat}; \\addlegendentryexpanded{\\(p = \\num{" .. line .. "}\\)};"
                     tex.sprint(txt)
                 end
             \end{luacode*}

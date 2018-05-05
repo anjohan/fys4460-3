@@ -1,10 +1,14 @@
+reportdeps =  report.tex sources.bib tmp/verification.txt tmp/P_100_64.dat tmp/c_P.dat tmp/d_a.dat tmp/f_p.dat tmp/f_p_1.dat
 MAKEFLAGS += --silent
 all:
 	@mkdir -p tmp
 	@mkdir -p build
 	@cd build; cmake ..; make
 	make report.pdf
-report.pdf: report.tex sources.bib tmp/verification.txt tmp/P_100_64.dat tmp/c_P.dat tmp/d_a.dat tmp/f_p.dat tmp/f_p_1.dat
+report.makefile: $(reportdeps)
+	lualatex -shell-escape report.tex
+report.pdf: report.makefile $(reportdeps)
+	make -j4 -f report.makefile
 	latexmk -pdflua -shell-escape report
 tmp/f_p.dat tmp/f_p_1.dat: build/f
 	./build/f
