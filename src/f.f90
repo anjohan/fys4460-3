@@ -8,7 +8,7 @@ program f
     real(kind=dp), dimension(:), allocatable :: probabilities, cluster_number_densities, sizes
 
     L = 512
-    num_samples = 100
+    num_samples = 1000
     probabilities = [0.45d0, 0.55d0, 0.57d0, 0.58d0, &
                      0.60d0, 0.62d0, 0.65d0, 0.75d0]
     num_probabilities = size(probabilities)
