@@ -411,7 +411,7 @@ The listed algorithm can be used to calculate the cluster number density \(n(s,p
 \end{equation}
 Due to the skewed distribution of cluster sizes, with many being small and few large clusters (except for the spanning cluster, which is ignored), this method would give similarly poor results as in~\vref{fig:d}. Consequently, the sizes should be binned logarithmically and the results averaged, i.e.
 \begin{equation}
-    n\left(\left[s,s+\Delta s\right),p\right) = \displaystyle\sum_{\text{cycles}}\frac{\text{number of clusters with size between } s \text{ and } s+\Delta s}{\Delta s \cdot \text{number of cycles}}.
+    n\left(\left[s,s+\Delta s\right),p\right) = \displaystyle\sum_{\text{cycles}}\frac{\text{number of clusters with size between } s \text{ and } s+\Delta s}{L^2 \cdot \Delta s \cdot \text{number of cycles}}.
 \end{equation}
 \lstinputlisting[language=Fortran,linerange={cndstart-cndend}]{lib/clusterlabelling.f90}
 
@@ -424,15 +424,15 @@ Due to the skewed distribution of cluster sizes, with many being small and few l
 %
 \subsection{}
 The cluster number density algorithm from the previous exercise was used. \Vref{fig:f} shows the result for various values of \(p\) for a fixed system size.
-%\tikzexternaldisable
 \begin{figure}[tbh]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
             xmode=log, ymode=log,
             ymin=0.000000001,
-            legend style={draw=none,at={(0,0)},anchor=south west},
+            legend style={draw=none,at={(0.01,0)},anchor=south west},
             legend cell align=left,
+            legend columns=2,
             thick,
             %axis lines=middle,
             xlabel style={anchor=west},
@@ -457,6 +457,44 @@ The cluster number density algorithm from the previous exercise was used. \Vref{
     \end{tikzpicture}
     \caption{Cluster number density as a function of size for a few different probabilities, with \(L=512\) and \(\num{1000}\) Monte Carlo cycles. As \(p\) approaches \(p_c\) from below, a larger and larger portion of the graph is approximately linear. Since both axes are logarithmic, this implies a power-law behaviour, \(n(s,p)\propto s^{-\tau}\).}%
     \label{fig:f}
+\end{figure}
+
+
+%   __ _
+%  / _` |
+% | (_| |
+%  \__, |
+%  |___/
+\subsection{}
+The cluster number density algorithm from the previous exercise was used. \Vref{fig:f} shows the result for various values of \(p\) for a fixed system size.
+\begin{figure}[tbh]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmode=log, ymode=log,
+            ymin=0.00000000001,
+            legend style={draw=none,at={(0.01,0)},anchor=south west},
+            legend cell align=left,
+            legend columns=3,
+            thick,
+            %axis lines=middle,
+            xlabel style={anchor=west},
+            ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(s\)},
+            ylabel={\(n(s,p_c)\)},
+            ]
+            \foreach \exponent in {9,8,...,4}{
+                \addplot+[mark=none] table {tmp/g_\exponent.dat};
+                \addlegendentryexpanded {\(L = 2^\exponent\)};
+            }
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Cluster number density as a function of size with \(p=p_c\), \(L=512\) and \(\num{1000}\) Monte Carlo cycles.}%
+    \label{fig:g}
 \end{figure}
 
 
