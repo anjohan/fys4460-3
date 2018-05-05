@@ -44,7 +44,7 @@
 \usepgfplotslibrary{external}
 \tikzset{external/system call={lualatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
 \tikzexternalize[prefix=tmp/]
-\pgfplotsset{cycle list/Set1}
+\pgfplotsset{cycle list/Dark2}
 \pgfplotsset{compat=1.8}
 \renewcommand{\CancelColor}{\color{red}}
 \let\oldexp=\exp
@@ -189,7 +189,18 @@ The functions \(\Pi(p,L)\) and \(P(p,L)\) are estimated by repeating a simulatio
 % |_.__/
 %
 \subsection{}
-The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. A variety of system sizes \(L\) and numbers of samples were used for probabilities in the range from zero to one. See~\vref{fig:PI} and~\vref{fig:PL}.
+The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. \(\Pi(p,L)\) is calculated by creating many random, binary matrices, counting the numbers of matrices which have a spanning cluster and dividing by the total number of matrices created.
+
+If there is no spanning cluster, \(P(p,L)=0\), otherwise it is equal to the number of sites belonging to the spanning cluster, divided by the total number of sites. Hence it is equal to the the probability of one randomly selected site being on the spanning cluster. An estimate is found by creating and labelling many binary matrices and averaging the number of sites on the spanning cluster (or zero), and dividing by the total number of sites on the lattice.
+
+Mathematically,
+\begin{alignat}{2}
+    \Pi(p,L) &= \frac{\displaystyle\sum_{\text{cycles}} \begin{cases}1, & \text{spanning cluster exists}\\ 0, & \text{no spanning cluster exists}\end{cases}}{\text{number of cycles}}
+    \shortintertext{and}
+    P(p,L) &= \frac{\displaystyle\sum_{\text{cycles}} \begin{cases}0,&\text{no spanning cluster exists}\\& \text{mass of spanning cluster} \end{cases}}{L^2\cdot\text{number of cycles}}.
+\end{alignat}
+
+A variety of system sizes \(L\) and numbers of samples were used for probabilities in the range from zero to one. See~\vref{fig:PI} and~\vref{fig:PL}.
 \begin{figure}[bth]
     \centering
     \begin{subfigure}{\textwidth}
@@ -394,7 +405,15 @@ and the results are shown in~\vref{fig:d}.
 %  \___|
 %
 \subsection{}
-BLAHBLAH
+The listed algorithm can be used to calculate the cluster number density \(n(s,p)\) with logarithmically binned sizes. \(n(s,p)\) is defined as the probability for a randomly selected site to be a specific site on a cluster with size \(s\). It can therefore be calculated as
+\begin{equation}
+    n(s,p) = \frac{\displaystyle\sum_{\text{cycles}}\text{number of clusters with size } s}{\text{number of cycles}}.
+\end{equation}
+Due to the skewed distribution of cluster sizes, with many being small and few large clusters (except for the spanning cluster, which is ignored), this method would give similarly poor results as in~\vref{fig:d}. Consequently, the sizes should be binned logarithmically and the results averaged, i.e.
+\begin{equation}
+    n\left(\left[s,s+\Delta s\right),p\right) = \displaystyle\sum_{\text{cycles}}\frac{\text{number of clusters with size between } s \text{ and } s+\Delta s}{\Delta s \cdot \text{number of cycles}}.
+\end{equation}
+\lstinputlisting[language=Fortran,linerange={cndstart-cndend}]{lib/clusterlabelling.f90}
 
 
 %   __
@@ -436,7 +455,7 @@ The cluster number density algorithm from the previous exercise was used. \Vref{
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{BLAHBLAH}%
+    \caption{Cluster number density as a function of size for a few different probabilities, with \(L=512\) and \(\num{1000}\) Monte Carlo cycles. As \(p\) approaches \(p_c\) from below, a larger and larger portion of the graph is approximately linear. Since both axes are logarithmic, this implies a power-law behaviour, \(n(s,p)\propto s^{-\tau}\).}%
     \label{fig:f}
 \end{figure}
 
