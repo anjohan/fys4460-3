@@ -258,7 +258,7 @@ A variety of system sizes \(L\) and numbers of samples were used for probabiliti
     \caption{Probability of having a spanning cluster, compared both for different system sizes and for different numbers of Monte Carlo cycles. The graphs show that large systems give good results with very few samples, while small systems require a large number of samples to give good results with little noise.}
     \label{fig:PI}
 \end{figure}
-\begin{figure}[tbh]
+\begin{figure}[htb]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
@@ -301,7 +301,7 @@ Fortran does, unfortunately, not have an \lstinline{np.polyfit} function, so the
 
 A fairly poor fit is found for probabilities which are either close to or far away from the critical probability. The error for probabilities close to the critical probability is due to finite size effects; the theoretical model is exactly zero, while the finite size of the lattice causes the spanning cluster density to become non-zero even when \(p\) is slightly smaller than \(p_c\). On the opposite side of the spectrum, the deviation is also large when \(p\gg p_c\) due to the limited range of validity for the theoretical model.
 
-\begin{figure}[tbh]
+\begin{figure}[htb]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
@@ -343,7 +343,7 @@ and the results are shown in~\vref{fig:d}.
 \openin\infile=tmp/d_a.dat
 \read\infile to\myslope
 \closein\infile
-\begin{figure}[tbh]
+\begin{figure}[htb]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \begin{tikzpicture}
@@ -426,12 +426,12 @@ Due to the skewed distribution of cluster sizes, with many being small and few l
 %
 \subsection{}
 The cluster number density algorithm from the previous exercise was used. \Vref{fig:f} shows the result for various values of \(p\) for a fixed system size.
-\begin{figure}[tbh]
+\begin{figure}[htb]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
             xmode=log, ymode=log,
-            ymin=0.000000001,
+            ymin=0.000000000001,
             legend style={draw=none,at={(0.02,0.02)},anchor=south west},
             legend cell align=left,
             legend columns=2,
@@ -472,7 +472,7 @@ The cluster number density algorithm from the previous exercise was used. \Vref{
 \closein\infile
 \subsection{}
 As seen in~\vref{fig:f}, the cluster number density has a large linear part when \(p\to p_c\). Both axes in this figure are logarithmic, so the linearity implies a power-law behaviour for \(n(s,p_c)\), i.e. \(n(s,p_c)\propto s^{-\tau}\). \Vref{fig:g} shows \(n(s,p_c)\) with \(L^i\), \(i\in\qty{4,\dots,9}\), as well as the result of a linear fit for the largest system size. The linear part is found by staring at the graph, and the resulting exponent is \(\tau=\num{\mytau}\).
-\begin{figure}[tbh]
+\begin{figure}[htb]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
@@ -504,9 +504,87 @@ As seen in~\vref{fig:f}, the cluster number density has a large linear part when
     \label{fig:g}
 \end{figure}
 
+%  _
+% | |__
+% | '_ \
+% | | | |
+% |_| |_|
+\openin\infile=tmp/h_sigma.dat
+\read\infile to \mysigma
+\closein\infile
+\subsection{}
+Comparing~\vref{fig:f} with~\vref{fig:g} shows that when \(p\approx p_c\), \(n(s,p)\) has a linear portion similar to that of \(n(s,p_c)\), but it falls of from the linear trend when \(s\) becomes large. This point of departure can be defined as a characteristic size \(s_\xi\). It can be numerically estimated as the point where \(n(s,p)\leq \tfrac{1}{2}n(s,p_c)\).
 
+The characterstic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolation_2015} to be proportional to \(\abs{p-p_c}^{-1/\sigma}\), where \(\sigma\) once again is found by doing linear regression on a logarithmic scale.~\Vref{fig:h} shows the cluster number density as a function of size for probabilities approaching \(p_c\), with \(s_\xi\) marks based on the numerical estimate described above. The resulting \(s_\xi(p)\) is shown in~\vref{fig:h2}, and the theoretical model \(\abs{p-p_c}^{-1/\num{\mysigma}}\) gives a good approximation of the simulation results.
 
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmode=log, ymode=log,
+            ymin=0.000000000001,
+            legend style={draw=none,at={(0.02,0.02)},anchor=south west},
+            legend cell align=left,
+            legend columns=2,
+            thick,
+            %axis lines=middle,
+            xlabel style={anchor=west},
+            ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(s\)},
+            ylabel={\(n(s,p)\)},
+            ]
+            \addplot+[only marks] table {tmp/h_s_xi.dat};
+            \addlegendentryexpanded{\(s_\xi\)};
+            \begin{luacode*}
+                local i = 0
+                for line in io.lines("tmp/h_p.dat") do
+                    i = i + 1
+                    print(line)
+                    txt = "\\addplot+[mark=none] table {tmp/h_"
+                          .. tostring(i) .. ".dat};"
+                          .. "\\addlegendentryexpanded{\\(p = \\num{"
+                          .. line .. "}\\)};"
+                    tex.sprint(txt)
+                end
+            \end{luacode*}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Cluster number density as a function of size for probabilities just above \(p_c\) with \(L=512\) and \(\num{2000}\) Monte Carlo cycles. The dots mark the numerical estimates of \(s_\xi\).}%
+    \label{fig:h}
+\end{figure}
 
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            legend style={draw=none,at={(1.0,0.7)}},
+            legend cell align=left,
+            thick,
+            xmin=0.4, xmax=0.7,
+            %axis lines=middle,
+            xlabel style={anchor=west},
+            ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(p\)},
+            ylabel={\(s_\xi\)},
+            xtick distance=0.05,
+            ]
+            \addplot+[only marks] table[x index=0, ,y index=1] {tmp/h_s_xi2.dat};
+            \addlegendentryexpanded{Simulation results};
+            \addplot+[mark=none] table[x index=0, ,y index=2] {tmp/h_s_xi2.dat};
+            \addlegendentryexpanded{\(\abs{p-p_c}^{-1/\num{\mysigma}}\)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Characteristic cluster size \(s_\xi\) as a function of probability. As the probability approaches the critical probability, \(s_\xi\) diverges. The parameters of the power law model are found from linear regression on a logarithmic scale, and the resulting approximation looks good.}%
+    \label{fig:h2}
+\end{figure}
 
 
 
