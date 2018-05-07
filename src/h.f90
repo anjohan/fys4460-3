@@ -15,7 +15,7 @@ program h
     num_probabilities = size(probabilities)
     open(newunit=p_unit, file="tmp/h_p.dat", status="replace")
     do i = 1, num_probabilities
-        write(unit=p_unit, fmt="(f0.3)") probabilities(i)
+        write(unit=p_unit, fmt="(f0.2)") probabilities(i)
     end do
     close(unit=p_unit)
 
