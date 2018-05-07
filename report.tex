@@ -566,8 +566,8 @@ The characterstic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolatio
             thick,
             xmin=0.4, xmax=0.7,
             %axis lines=middle,
-            xlabel style={anchor=west},
-            ylabel style={anchor=south east},
+            %xlabel style={anchor=north},
+            %ylabel style={anchor=south east},
             %axis y discontinuity=crunch,
             enlarge x limits=0.05,
             enlarge y limits=0.1,
@@ -592,8 +592,41 @@ The characterstic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolatio
 % | |
 % |_|
 %
-The mass of the percolating/spanning cluster \(M\) should be proportional to some power of the system size \(L\). The non-trivial geometry of the spanning cluster causes the exponent to be different from the dimension of the system, i.e. \(2\) in this project.
+\openin\infile=tmp/i_D.dat
+\read\infile to \myD
+\closein\infile
+\subsection{}
+The mass of the percolating/spanning cluster \(M\) should be proportional to some power of the system size \(L\). Intuitively, the exponent should be equal to the dimension of the system (\(2\) in this project), but the non-trivial geometry of the spanning cluster causes the exponent to deviate from this expectation. This is confirmed by the numerically determined \(D=\num{\myD}<2\). \Vref{fig:i} shows the quality of the approximation.
 
+\begin{figure}[htb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmode=log, ymode=log,
+            log basis x=2,
+            legend style={draw=none,at={(0.02,0.98)},anchor=north west},
+            legend cell align=left,
+            %legend columns=3,
+            thick,
+            %axis lines=middle,
+            %xlabel style={anchor=west},
+            %ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(L\)},
+            ylabel={\(M\)},
+            ]
+            \addplot+[only marks] table[x index=0, y index=1] {tmp/i.dat};
+            \addlegendentryexpanded {Simulation results};
+            \addplot+[mark=none] table[x index=0, y index=2] {tmp/i.dat};
+            \addlegendentryexpanded {Approximation \(L^{\num{\myD}}\)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Mass of the percolating cluster as a function of system size, with \(p=p_c\) and \(200\) Monte Carlo cycles. The power-law model fits well, and \(D=\num{\myD}<2\) shows the non-trivial geometry of the percolating cluster.}%
+    \label{fig:i}
+\end{figure}
 
 
 
