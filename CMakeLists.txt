@@ -32,6 +32,6 @@ function(addexewithlibs name)
     target_link_libraries(${name} ${mylibraries})
 endfunction()
 
-foreach(exe verification speedtest stuff b c f g h)
+foreach(exe verification speedtest stuff b c f g h i)
     addexewithlibs(${exe})
 endforeach()
