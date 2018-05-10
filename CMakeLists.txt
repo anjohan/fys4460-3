@@ -8,7 +8,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(generalflags "-Wall -Wextra")
-set(speedflags "-Ofast")
+set(speedflags "-Ofast -fopenmp")
 set(debugflags "-O0 -g")
 
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${generalflags}")
@@ -21,7 +21,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_DEBUG} ${generalflags}
 
 add_library(utilities ${CMAKE_SOURCE_DIR}/lib/utilities.f90)
 add_library(clusterlabelling ${CMAKE_SOURCE_DIR}/lib/clusterlabelling.f90)
-add_library(hk ${CMAKE_SOURCE_DIR}/lib/hk.c)
+add_library(hk ${CMAKE_SOURCE_DIR}/lib/hk.f90)
 
 add_dependencies(clusterlabelling utilities hk)
 
