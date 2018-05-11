@@ -7,7 +7,7 @@ program iprogram
     logical, dimension(:,:), allocatable :: matrix
     integer, dimension(:,:), allocatable :: label_matrix
     integer, dimension(:), allocatable :: Ls
-    real(kind=dp) :: D, const
+    real(kind=dp) :: D, const, tmpM
     real(kind=dp), dimension(:), allocatable :: Ms_approx, Ms
 
     num_samples = 200
@@ -18,12 +18,18 @@ program iprogram
 
     do i = 1, num_Ls
         associate(L => Ls(i), M => Ms(i))
+            tmpM = 0
+            !$omp  parallel do &
+            !$omp& private(matrix, label_matrix, num_clusters, spanning_label) &
+            !$omp& reduction(+:tmpM)
             do j = 1, num_samples
                 matrix = create_binary_matrix(pc, L)
                 call label(matrix, label_matrix, num_clusters)
                 spanning_label = find_spanning_cluster(label_matrix, num_clusters)
-                M = M + count(label_matrix == spanning_label)
+                tmpM = tmpM + count(label_matrix == spanning_label)
             end do
+            !$omp end parallel do
+            M = tmpM
         end associate
     end do
 
