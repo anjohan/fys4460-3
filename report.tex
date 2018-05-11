@@ -87,7 +87,7 @@
     numberstyle=\color{bluekeywords},
     stringstyle=\color{redstrings},
     breaklines=true,
-    texcl=true,
+    %texcl=true,
     language=Fortran
 }
 \colorlet{DarkGrey}{white!20!black}
@@ -174,7 +174,7 @@ where the recursive \lstinline{growcluster} subroutine simply checks if each nei
 \lstinputlisting[linerange={growclustersubroutinestart-growclustersubroutineend}]{lib/clusterlabelling.f90}
 This algorithm is easily extensible to other geometries and connectivities, as the basic idea ``check all sites, check all neighbours'' is generally valid. Higher dimensions should also be unproblematic, although a generalisation of checking all neighbours would be useful to avoid tedious coding.
 
-There is, however, one pressing issue with this algorithm: It is recursive (and not tail-recursive). As a result, it will give a stack overflow when run on sufficiently large systems. For this reason, I reluctantly had to abandon my algorithm and instead write a small Fortran interface for a C implementation of the Hoshen-Kopelman algorithm found on the internet\cite{fricke_hoshen-kopelman_2004}.
+There is, however, one pressing issue with this algorithm: It is recursive (and not tail-recursive). As a result, it will give a stack overflow when run on sufficiently large systems. For this reason, I reluctantly had to abandon my algorithm and instead write a small Fortran interface for a C implementation of the Hoshen-Kopelman algorithm found on the internet\cite{fricke_hoshen-kopelman_2004}. Unfortunately, this implementation uses a lot of global variables and is not thread safe, so I now have my own Fortran implementation.
 
 Spanning cluster detection is done by checking if either the top and bottom rows or the left and right columns contain common elements. This is implemented by first going through one of the arrays and registering which labels are present, and then going through the other array and checking if any of the labels in this array were also present in the first,
 \lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{lib/clusterlabelling.f90}
