@@ -1,4 +1,3 @@
-import scipy.interpolate
 import numpy as np
 
 N = 1000000
@@ -16,9 +15,6 @@ f[-1] = diff[-1]
 
 a, b = np.polyfit(np.log(z), np.log(f), deg=1)
 # /Pend/ #
-# Pspline = scipy.interpolate.UnivariateSpline(z, P, s=0)
-# f = Pspline.derivative()
-# f = f(z)
 
 lastindex = np.searchsorted(z, 10)
 
