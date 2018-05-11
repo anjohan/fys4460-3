@@ -642,7 +642,38 @@ Nope.
 % |_|
 %
 \subsection{}
+In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.e.\ for a given number \(x\) determining \(p_{\Pi=x}\) such that \(\Pi(p_{\Pi=x},L) = x\). I have chosen to implement this with the bisection method, as it is very simple but also quickly converging --- the error is halved with every calculation of \(\Pi\).
+\lstinputlisting[linerange={invPIstart-invPIend}]{lib/clusterlabelling.f90}
 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            % xmode=log, ymode=log,
+            % log basis x=2,
+            legend style={draw=none,at={(0.98,0.02)},anchor=south east},
+            legend cell align=left,
+            %legend columns=3,
+            thick,
+            %axis lines=middle,
+            %xlabel style={anchor=west},
+            %ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(L\)},
+            ylabel={\(p_{\Pi=x}\)},
+            ]
+            \addplot+[only marks] table {tmp/l_1.dat};
+            \addlegendentryexpanded {\(x=\num{0.3}\)};
+            \addplot+[only marks] table {tmp/l_2.dat};
+            \addlegendentryexpanded {\(x=\num{0.8}\)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Inverse of the percolation probability \(x = \Pi(p,L)\) as a function of \(L\) for two different values of \(x\).}%
+    \label{fig:l}
+\end{figure}
 
 
 
