@@ -784,7 +784,7 @@ so that \(-1/\nu\) will be the slope when plotting \(\Pi^{-1}(x_1,L) - \Pi^{-1}(
 \[
     \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu},
 \]
-where \(\nu\) is known to be exactly \(4/3\).
+where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a linear function of \(L^{-1/\nu}\), with \(p_c\) as value at \(L^{-1/\nu}=0\), i.e. \(L=\infty\). the critical probability can therefore be estimated by calculating \(\Pi^{-1}\) as a function of \(L^{-1/\nu}\), doing linear regression and extracting the constant term. This gives~\vref{fig:n1}, and the different values of \(x\) give similar and quite accurate estimates for \(p_c\).
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -794,8 +794,8 @@ where \(\nu\) is known to be exactly \(4/3\).
             legend columns=1,
             thick,
             axis lines=middle,
-            xlabel style={anchor=west},
-            ylabel style={anchor=south east},
+            xlabel style={anchor=north},
+            %ylabel style={anchor=south east},
             axis y discontinuity=crunch,
             enlarge x limits=0.05,
             enlarge y limits=0.12,
@@ -837,7 +837,19 @@ where \(\nu\) is known to be exactly \(4/3\).
     \caption{Inverse percolation probability \(\Pi^{-1}(x,L)\) as a function of \(L^{-1/\nu}\) for a few different values of \(x\), together with linear fits. The intersection between the linear fit and the \(y\) axis gives an estimate for the critical probability \(p_c\).}%
     \label{fig:n1}
 \end{figure}
-
+The function \(C(x)\) in
+\begin{equation}
+    \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu}
+\end{equation}
+is what the lecture notes call \(\Phi^{-1}(x)\). Consequently, with \(p=\Pi^{-1}(x,L)\),
+\begin{equation}
+    p - p_c = \Phi^{-1}(x) L^{-1/\nu} \implies \Phi^{-1}(x) = \qty(p-p_c)L^{1/\nu}.
+\end{equation}
+By definition, \(x=\Pi(p,L)\), and hence applying \(\Phi\) on both sides gives
+\begin{equation}
+    \Pi(p,L) = \Phi\qty(\qty(p-p_c)L^{1/\nu}).
+\end{equation}
+The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(\Pi(p,L)\) as a function of \(\qty(p-p_c)L^{1/\nu}\). I have chosen to vary \(p\) for a few different values of \(L\).
 
 
 
