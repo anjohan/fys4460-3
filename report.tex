@@ -642,7 +642,7 @@ Nope.
 % |_|
 %
 \subsection{}
-In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.e.\ for a given number \(x\) determining \(p_{\Pi=x}\) such that \(\Pi(p_{\Pi=x},L) = x\). I have chosen to implement this with the bisection method, as it is very simple but also quickly converging --- the error is halved with every calculation of \(\Pi\).
+In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.e.\ for a given number \(x\) determining \(p_{\Pi=x}\) such that \(\Pi(p_{\Pi=x},L) = x\). I have chosen to implement this with the bisection method, as it is very simple but also quickly converging --- the error is halved with every calculation of \(\Pi\). \Vref{fig:l} shows the result.
 \lstinputlisting[linerange={invPIstart-invPIend}]{lib/clusterlabelling.f90}
 
 \begin{figure}[H]
@@ -671,7 +671,7 @@ In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.
             \addlegendentryexpanded {\(x=\num{0.8}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Inverse of the percolation probability \(x = \Pi(p,L)\) as a function of \(L\) for two different values of \(x\).}%
+    \caption{Inverse of the percolation probability \(x = \Pi(p,L)\) as a function of \(L\) for two different values of \(x\). As \(L\) increases, \(p_{\Pi=x}\) approaches the same value for both values of \(x\). This value must be \(p_c\), since~\vref{fig:PI} shows that \(\Pi(p,L)\) approaches a step function around \(p_c\) as \(L\to\infty\). \(\Pi^{-1}(p,L)\) should therefore be almost constant, with value \(p_c\), for large values of \(L\).}%
     \label{fig:l}
 \end{figure}
 
