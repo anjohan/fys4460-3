@@ -291,9 +291,9 @@ A variety of system sizes \(L\) and numbers of samples were used for probabiliti
 The same functions as in the previous exercise were used to calculate \(P(p,L)\) for probabilities going from slightly above the critical probability, \(p_c\), to \(\SI{20}{\percent}\) above \(p_c\). A lower bound of exactly \(p_c\) makes the computer complain when attempting to calculate \(\ln(p-p_c)\).
 
 According to the exercise description, the spanning cluster density \(P(p,L)\) should be proportional to \(\qty(p-p_c)^\beta\) for some exponent \(\beta\) for \(p>p_c\). The exponent is found by doing linear regression on a log-log scale, as
-\[
+\begin{equation}
     P(p,L) = a\qty(p-p_c)^\beta \implies \log_{10}(P(p,L)) = \log_{10}(a) + \beta\log_{10}(p-p_c).
-\]
+\end{equation}
 \openin\infile=tmp/c_beta.dat
 \read\infile to \mybeta
 \closein\infile
@@ -663,7 +663,7 @@ In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.
             enlarge y limits=0.1,
             width=6in, height=3in,
             xlabel={\(L\)},
-            ylabel={\(p_{\Pi=x}\)},
+            ylabel={\(p_{\Pi=x} = \Pi^{-1}(x)\)},
             ]
             \addplot+[only marks] table {tmp/l_1.dat};
             \addlegendentryexpanded {\(x=\num{0.3}\)};
@@ -676,6 +676,109 @@ In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.
 \end{figure}
 
 
+%  _ __ ___
+% | '_ ` _ \
+% | | | | | |
+% |_| |_| |_|
+%
+\openin\infile=tmp/m_nu.dat
+\read\infile to \mynu
+\closein\infile
+\subsection{}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                thick,
+                axis lines=middle,
+                %xlabel style={anchor=north},
+                %ylabel style={anchor=south east},
+                %axis y discontinuity=crunch,
+                xmin=0, samples=100,
+                enlarge x limits=0.05,
+                enlarge y limits=0.1,
+                width=3.4in, height=3in,
+                xlabel={\(p\)},
+                ylabel={\(\Pi(p,L\gg 1)\)},
+                ]
+                \addplot+[mark=none,domain=0:1] {1/(1+exp(-2*50*(x-0.59275)))};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Percolation probability.}%
+    \end{subfigure}\quad
+    \begin{subfigure}[b]{0.45\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                legend style={draw=none,at={(1.1,0.8)},anchor=east},
+                legend cell align=left,
+                thick, samples=100,
+                axis lines=middle,
+                %xlabel style={anchor=north},
+                %axis y discontinuity=crunch,
+                enlarge x limits=0.05,
+                enlarge y limits=0.1,
+                width=3.4in, height=3in,
+                xlabel={\(x\)},
+                ylabel={\(\Pi^{-1}(x,L\gg 1)\)},
+                ]
+                \addplot+[mark=none,domain=0:1] ({1/(1+exp(-2*50*(x-0.59275)))},{x});
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Inverse percolation probability.}%
+    \end{subfigure}
+    \caption{Approximate plot of the percolation probability and its inverse when \(L\) is large. In this limit, the percolation probability is nearly a step function centered at the critical probability \(p_c\), and the inverse is consequently approximately constant, with value \(p_c\).}%
+    \label{fig:PIinv}
+\end{figure}
+\Vref*{fig:l} shows that \(\Pi^{-1}(x)\) approaches some constant value as \(L\to\infty\). On the other hand,~\vref{fig:PI} shows that \(\Pi(p,L)\to \Theta(x-p_c)\) in the same limit, and so the constant value of \(\Pi^{-1}(x)\) must be \(p_c\). This is illustrated in~\vref{fig:PIinv}.
+
+It is difficult to exactly determine the nature of the approach to \(p_c\) from~\vref{fig:l}, but everything else in the world of percolation is a power law, so it seems reasonable to hope that this should be the case for \(\Pi^{-1}(x) - p_c\) as well, i.e.
+\begin{equation}
+    \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu}
+\end{equation}
+for some \(\nu\).
+This equation can be used to determine \(\nu\), as
+\[
+    \Pi^{-1}(x_1,L) - \Pi^{-1}(x_2,L) = \qty(C(x_1) - C(x_2))L^{-1/\nu},
+\]
+so that \(-1/\nu\) will be the slope when plotting \(\Pi^{-1}(x_1,L) - \Pi^{-1}(x_2,L)\) as a function of \(L\) on a logarithmic scale. Linear fitting gives \(\nu=\num{\mynu}\), which is close to the exact value \(\nu=4/3\). \Vref{fig:m} shows the results.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmode=log, ymode=log,
+            log basis x=2,
+            legend style={draw=none,at={(0.98,0.98)},anchor=north east},
+            legend cell align=left,
+            %legend columns=3,
+            thick,
+            %axis lines=middle,
+            %xlabel style={anchor=west},
+            %ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(L\)},
+            ylabel={\(\Pi^{-1}(\num{0.8},L) - \Pi^{-1}(\num{0.3},L)\)},
+            ]
+            \addplot+[only marks] table[x index=0, y index=1] {tmp/m.dat};
+            \addlegendentryexpanded {Simulation results};
+            \addplot+[mark=none] table[x index=0, y index=2] {tmp/m.dat};
+            \addlegendentryexpanded {Approximation \(L^{-1/\num{\mynu}}\)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Difference in inverse percolation probability as a function of \(L\). The approximately linear trend on a logarithmic scale validates the guess of yet another power-law behaviour.}%
+    \label{fig:m}
+\end{figure}
+
+
+%  _ __
+% | '_ \
+% | | | |
+% |_| |_|
+%
 
 
 
