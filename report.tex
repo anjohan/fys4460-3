@@ -779,7 +779,64 @@ so that \(-1/\nu\) will be the slope when plotting \(\Pi^{-1}(x_1,L) - \Pi^{-1}(
 % | | | |
 % |_| |_|
 %
-
+\subsection{}
+\Vref*{fig:m} confirms the power-law behaviour of the approach of \(\Pi^{-1}(x,L)\) to \(p_c\) as a function of \(L\), i.e.
+\[
+    \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu},
+\]
+where \(\nu\) is known to be exactly \(4/3\).
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            legend style={draw=none,at={(0.06,0.02)},anchor=south west},
+            legend cell align=left,
+            legend columns=1,
+            thick,
+            axis lines=middle,
+            xlabel style={anchor=west},
+            ylabel style={anchor=south east},
+            axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.12,
+            width=6in, height=3in,
+            xlabel={\(L^{-1/\nu}\)},
+            ylabel={\(\Pi^{-1}(x,L)\)},
+            xtick distance=0.02,
+            x tick label style={
+                /pgf/number format/.cd,
+                    fixed,
+                    fixed zerofill,
+                    precision=2,
+                /tikz/.cd
+            }
+            ]
+            \begin{luacode*}
+                local i = 0
+                for line in io.lines("tmp/n_x.dat") do
+                    i = i + 1
+                    print(line)
+                    myfile = io.open("tmp/n_pc_" .. tostring(i) .. ".dat", "r")
+                    local pc = myfile.read(myfile)
+                    txt = "\\addplot+[only marks] table {tmp/n_"
+                          .. tostring(i) .. ".dat};"
+                          .. "\\addlegendentryexpanded{\\(x = \\num{"
+                          .. line .. "}, p_c = \\num{" .. pc .. "}\\)};"
+                    tex.sprint(txt)
+                end
+                local i = 0
+                for line in io.lines("tmp/n_x.dat") do
+                    i = i + 1
+                    txt = "\\addplot+[mark=none,gray] table {tmp/n_"
+                          .. tostring(i) .. "_approx.dat};"
+                    tex.sprint(txt)
+                end
+            \end{luacode*}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Inverse percolation probability \(\Pi^{-1}(x,L)\) as a function of \(L^{-1/\nu}\) for a few different values of \(x\), together with linear fits. The intersection between the linear fit and the \(y\) axis gives an estimate for the critical probability \(p_c\).}%
+    \label{fig:n1}
+\end{figure}
 
 
 
