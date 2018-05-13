@@ -1,5 +1,5 @@
 program speedtest
-    use clusterlabelling
+    use percolation
     use utilities
     implicit none
     integer, parameter :: L = 10000

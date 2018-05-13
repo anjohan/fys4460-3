@@ -1,6 +1,6 @@
 program c
     use utilities
-    use clusterlabelling
+    use percolation
 
     implicit none
 

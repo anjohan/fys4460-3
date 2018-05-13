@@ -1,6 +1,6 @@
 program iprogram
     use utilities
-    use clusterlabelling
+    use percolation
     implicit none
 
     integer :: num_samples, i, j, spanning_label, num_Ls, num_clusters, fileunit

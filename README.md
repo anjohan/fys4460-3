@@ -3,7 +3,7 @@ Files for the percolation project in FYS4460 at the University of Oslo, with imp
 
 lib/hk.f90 contains a Fortran implementation of the Hoshen-Kopelman algorithm for cluster labelling.
 
-lib/clusterlabelling.f90 contains various useful functions and subroutines for percolation.
+lib/percolation.f90 contains various useful functions and subroutines for percolation.
 
 ## Compilation
 Requirements:

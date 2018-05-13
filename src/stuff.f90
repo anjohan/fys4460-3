@@ -11,7 +11,7 @@ end module
 
 program test
     use utilities
-    use clusterlabelling
+    use percolation
     use stuffmod
     implicit none
     character(len=:), allocatable :: string

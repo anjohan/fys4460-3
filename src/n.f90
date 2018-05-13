@@ -1,5 +1,5 @@
 program n
-    use clusterlabelling, critical_probability => pc
+    use percolation, critical_probability => pc
     use utilities
     implicit none
 

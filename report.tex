@@ -156,7 +156,7 @@
 \pagestyle{fancy}
 \setcounter{page}{1}
 
-
+All files for this project are available at \url{https://github.com/anjohan/fys4460-3}.
 
 %   __ _
 %  / _` |
@@ -169,15 +169,15 @@ As my Easter procrastination was reading a Fortran book\cite{brainerd_guide_2015
 My algorithm goes through the entire grid, and for each site checks if it is occupied and unlabelled. If both these conditions are met, a recursive algorithm grows the entire cluster connected to this site.
 
 The main algorithm is the \lstinline{label} subroutine,
-\lstinputlisting[linerange={labelsubroutinestart-labelsubroutineend}]{lib/clusterlabelling.f90}
+\lstinputlisting[linerange={labelsubroutinestart-labelsubroutineend}]{lib/percolation.f90}
 where the recursive \lstinline{growcluster} subroutine simply checks if each neighbouring site is occupied and unlabelled,
-\lstinputlisting[linerange={growclustersubroutinestart-growclustersubroutineend}]{lib/clusterlabelling.f90}
+\lstinputlisting[linerange={growclustersubroutinestart-growclustersubroutineend}]{lib/percolation.f90}
 This algorithm is easily extensible to other geometries and connectivities, as the basic idea ``check all sites, check all neighbours'' is generally valid. Higher dimensions should also be unproblematic, although a generalisation of checking all neighbours would be useful to avoid tedious coding.
 
 There is, however, one pressing issue with this algorithm: It is recursive (and not tail-recursive). As a result, it will give a stack overflow when run on sufficiently large systems. For this reason, I reluctantly had to abandon my algorithm and instead write a small Fortran interface for a C implementation of the Hoshen-Kopelman algorithm found on the internet\cite{fricke_hoshen-kopelman_2004}. Unfortunately, this implementation uses a lot of global variables and is not thread safe, so I now have my own Fortran implementation.
 
 Spanning cluster detection is done by checking if either the top and bottom rows or the left and right columns contain common elements. This is implemented by first going through one of the arrays and registering which labels are present, and then going through the other array and checking if any of the labels in this array were also present in the first,
-\lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{lib/clusterlabelling.f90}
+\lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{lib/percolation.f90}
 The algorithm assumes that there is only one spanning cluster. This should be unproblematic, as it is higly unlikely that two clusters stretch from one side of the grid to the other without touching each other and thus being the same cluster. When the label of the spanning cluster has been found, the area is straightforwardly calculated by a command like \lstinline{count(labelled_matrix == spanning_label)}.
 A sample run gives
 \lstinputlisting{tmp/verification.txt}
@@ -422,7 +422,7 @@ Due to the skewed distribution of cluster sizes, with many being small and few l
 \begin{equation}
     n\left(\left[s,s+\Delta s\right),p\right) = \displaystyle\sum_{\text{cycles}}\frac{\text{number of clusters with size between } s \text{ and } s+\Delta s}{L^2 \cdot \Delta s \cdot \text{number of cycles}}.
 \end{equation}
-\lstinputlisting[language=Fortran,linerange={cndstart-cndend}]{lib/clusterlabelling.f90}
+\lstinputlisting[language=Fortran,linerange={cndstart-cndend}]{lib/percolation.f90}
 
 
 %   __
@@ -648,7 +648,7 @@ Nope.
 %
 \subsection{}
 In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.e.\ for a given number \(x\) determining \(p_{\Pi=x}\) such that \(\Pi(p_{\Pi=x},L) = x\). I have chosen to implement this with the bisection method, as it is very simple but also quickly converging --- the error is halved with every calculation of \(\Pi\). \Vref{fig:l} shows the result.
-\lstinputlisting[linerange={invPIstart-invPIend}]{lib/clusterlabelling.f90}
+\lstinputlisting[linerange={invPIstart-invPIend}]{lib/percolation.f90}
 
 \begin{figure}[H]
     \centering
@@ -803,7 +803,7 @@ where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a
             %ylabel style={anchor=south east},
             axis y discontinuity=crunch,
             enlarge x limits=0.05,
-            enlarge y limits=0.12,
+            enlarge y limits=0.14,
             width=6in, height=3in,
             xlabel={\(L^{-1/\nu}\)},
             ylabel={\(\Pi^{-1}(x,L)\)},

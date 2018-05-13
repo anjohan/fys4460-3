@@ -1,6 +1,6 @@
 program f
     use utilities
-    use clusterlabelling
+    use percolation
     implicit none
 
     character(len=:), allocatable :: filename

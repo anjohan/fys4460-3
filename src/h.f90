@@ -1,5 +1,5 @@
 program h
-    use clusterlabelling
+    use percolation
     use utilities
     implicit none
     integer :: num_probabilities, num_sizes, num_samples, L, n_unit, s_xi_unit, i, j, p_unit

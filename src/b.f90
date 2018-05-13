@@ -1,5 +1,5 @@
 program b
-    use clusterlabelling
+    use percolation
     use utilities
     implicit none
 
