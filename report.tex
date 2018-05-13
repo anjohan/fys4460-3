@@ -856,6 +856,45 @@ By definition, \(x=\Pi(p,L)\), and hence applying \(\Phi\) on both sides gives
 \end{equation}
 The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(\Pi(p,L)\) as a function of \(\qty(p-p_c)L^{1/\nu}\). I have chosen to vary \(p\) for a few different values of \(L\).
 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            % xmode=log, ymode=log,
+            % ymin=0.000000000001,
+            legend style={draw=none,at={(0.02,0.98)},anchor=north west},
+            legend cell align=left,
+            legend columns=2,
+            thick,
+            xmin=-5,
+            xmax=5,
+            axis lines=middle,
+            xlabel style={anchor=west},
+            ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(\qty(p-p_c)L^{1/\nu}\)},
+            ylabel={\(\Pi\)},
+            ]
+            \begin{luacode*}
+                local i = 0
+                for line in io.lines("tmp/n_Lpows.dat") do
+                    i = i + 1
+                    print(line)
+                    txt = "\\addplot+[mark=none] table {tmp/n_collapse_"
+                          .. tostring(i) .. ".dat};"
+                          .. "\\addlegendentryexpanded{\\(L = 2^{\\num{"
+                          .. line .. "}}\\)};"
+                    tex.sprint(txt)
+                end
+            \end{luacode*}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Percolation probability as a function of \(\qty(p-p_c)L^{1/\nu}\) for \(p\in\qty[0,1]\) and a few different values of \(L\). According to the finite size scaling guesses, the graphs should overlap, and the shape of the function should be that of \(\Phi(u)\).}%
+    \label{fig:ncollapse}
+\end{figure}
 
 
 
