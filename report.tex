@@ -319,7 +319,12 @@ A fairly poor fit is found for probabilities which are either close to or far aw
             width=6in, height=3in,
             xlabel={\(p\)},
             ylabel={\(P(p,L)\)},
-            xtick distance=0.01
+            xtick distance=0.002,
+            x tick label style={
+                /pgf/number format/fixed,
+                /pgf/number format/fixed zerofill,
+                /pgf/number format/precision=3,
+            }
             ]
             \addplot+[mark=none] table[x index=0, ,y index=1] {tmp/c_P.dat};
             \addlegendentryexpanded{Simulation results};
@@ -327,7 +332,7 @@ A fairly poor fit is found for probabilities which are either close to or far aw
             \addlegendentryexpanded{\(c\qty(p-p_c)^{\num{\mybeta}}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{512}\) and \(\num{100}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. }%
+    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{1024}\) and \(\num{50}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. }%
     \label{fig:cP}
 \end{figure}
 
@@ -459,7 +464,7 @@ The cluster number density algorithm from the previous exercise was used. \Vref{
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Cluster number density as a function of size for a few different probabilities, with \(L=512\) and \(\num{1000}\) Monte Carlo cycles. As \(p\) approaches \(p_c\) from below, a larger and larger portion of the graph is approximately linear. Since both axes are logarithmic, this implies a power-law behaviour, \(n(s,p)\propto s^{-\tau}\).}%
+    \caption{Cluster number density as a function of size for a few different probabilities, with \(L=\num{1024}\) and \(\num{100}\) Monte Carlo cycles. As \(p\) approaches \(p_c\) from below, a larger and larger portion of the graph is approximately linear. Since both axes are logarithmic, this implies a power-law behaviour, \(n(s,p)\propto s^{-\tau}\).}%
     \label{fig:f}
 \end{figure}
 
@@ -502,7 +507,7 @@ As seen in~\vref{fig:f}, the cluster number density has a large linear part when
             }
         \end{axis}
     \end{tikzpicture}
-    \caption{Cluster number density as a function of size with \(p=p_c\), \(L=512\) and \(\num{1000}\) Monte Carlo cycles. The power-law model fits well over a large range of sizes.}%
+    \caption{Cluster number density as a function of size with \(p=p_c\) and \(\num{1000}\) Monte Carlo cycles. The power-law model fits well over a large range of sizes.}%
     \label{fig:g}
 \end{figure}
 
@@ -555,7 +560,7 @@ The characterstic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolatio
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Cluster number density as a function of size for probabilities just above \(p_c\) with \(L=512\) and \(\num{2000}\) Monte Carlo cycles. The dots mark the numerical estimates of \(s_\xi\).}%
+    \caption{Cluster number density as a function of size for probabilities just above \(p_c\) with \(L=512\) and \(\num{500}\) Monte Carlo cycles. The dots mark the numerical estimates of \(s_\xi\).}%
     \label{fig:h}
 \end{figure}
 

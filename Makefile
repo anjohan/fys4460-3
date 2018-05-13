@@ -37,7 +37,7 @@ debug:
 	@cd debug_folder; cmake -DCMAKE_BUILD_TYPE=Debug ..; make
 clean:
 	latexmk -c
-	rm -rf __pycache__ pythontex-files-report *.pytxcode *.auxlock *.run.xml data *.bbl report.pdf tmp/report-figure* *.figlist *.makefile latex.out
+	rm -rf __pycache__ pythontex-files-report *.pytxcode *.auxlock *.run.xml data *.bbl report.pdf tmp/report-figure* *.figlist *.makefile latex.out *.mod
 force:
 	touch $(reportdeps)
 	make report.pdf

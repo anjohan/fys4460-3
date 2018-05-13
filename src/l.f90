@@ -9,7 +9,7 @@ program l
     character(len=:), allocatable :: filename
     real(kind=dp) :: tolerance, p_x
 
-    num_samples = 500
+    num_samples = 16000
     tolerance = 0.0001d0
 
     xs = [0.3, 0.8]
@@ -23,7 +23,7 @@ program l
             open(newunit=fileunit, file=filename, status="replace")
             do j = 1, num_Ls
                 associate(L => Ls(j))
-                    p_x = spanning_probability_inverse(x, L, num_samples, tolerance)
+                    p_x = spanning_probability_inverse(x, L, num_samples/L, tolerance)
                     write(unit=fileunit, fmt=*) L, p_x
                 end associate
             end do

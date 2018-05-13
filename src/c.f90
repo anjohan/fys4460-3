@@ -5,13 +5,13 @@ program c
     implicit none
 
     integer :: i,j,k, fileunit
-    integer, parameter :: L = 512, num_probabilities = 100, num_samples = 100
+    integer, parameter :: L = 1024, num_probabilities = 50, num_samples = 50
     real(kind=dp), dimension(:), allocatable :: probabilities, spanning_densities
     real(kind=dp), dimension(:), allocatable :: estimated_densities
     character(len=:), allocatable :: fmtstring, filename
     real(kind=dp) :: beta, const
 
-    probabilities = linspace(1.000000001d0*pc, 1.1d0*pc, num_probabilities)
+    probabilities = linspace(pc + 0.000001d0, 1.02d0*pc, num_probabilities)
 
     spanning_densities = [ (spanning_density(probabilities(i), L, num_samples), &
                             i = 1, num_probabilities) ]

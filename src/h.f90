@@ -8,7 +8,7 @@ program h
     real(kind=dp) slope, const, sigma
     character(len=:), allocatable :: filename
 
-    num_samples = 2000
+    num_samples = 500
     L = 512
 
     probabilities = [0.45, 0.50, 0.54, 0.57, 0.58]

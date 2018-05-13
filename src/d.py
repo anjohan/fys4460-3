@@ -26,4 +26,3 @@ np.savetxt("tmp/d_fapprox.dat",
            np.column_stack((z,
                             np.exp(b) * z**a))[:lastindex:lastindex // 1000])
 np.savetxt("tmp/d_a.dat", [a], fmt="%.3f")
-print(a, b)

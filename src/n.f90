@@ -11,7 +11,7 @@ program n
 
     pc = 0
     nu = 4/3.0d0
-    num_samples = 2**14
+    num_samples = 2**13
 
     xs = [0.1, 0.3, 0.7, 0.9]
     num_xs = size(xs)
