@@ -14,7 +14,7 @@ program m
     num_Ls = size(Ls)
 
     x1 = 0.8; x2 = 0.3
-    num_samples = 2**15; tolerance = 0.0001d0
+    num_samples = 2**16; tolerance = 0.0001d0
 
     allocate(invPI(num_Ls, 2))
 

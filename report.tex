@@ -898,7 +898,85 @@ The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(
     \label{fig:ncollapse}
 \end{figure}
 
+\subsection{}
+Nope.
 
+%  _ __
+% | '_ \
+% | |_) |
+% | .__/
+% |_|
+\subsection{}
+To find the singly connected bonds, i.e.\ the sites visited by both a right-turning and a left-turning walker, I have used the \lstinline{walk} function developed by Svenn-Arne Dragly, together with the following functions:
+\lstinputlisting[language=Python]{lib/singlyconnected.py}
+The \lstinline{walk} function implements the straightforward algorithm of left- and right-turning walkers. The right-turning walker always chooses to turn right relative to the current direction if possible, otherwise it tries to walk forward, to the left or back where it came from. Vice-versa for the left-turning walker. Once both walkers have reached the opposite side of where they came from, the sites visited by both walkers are the singly-connected bonds, i.e.\ the bonds whose removal would remove the percolating cluster.
+
+%   __ _
+%  / _` |
+% | (_| |
+%  \__, |
+%     |_|
+\openin\infile=tmp/qD.dat
+\read\infile to \myD
+\closein\infile
+\subsection{}
+As with the mass of the spanning cluster, the mass of the singly connected bonds should increase as some power of the system size \(L\) when \(p=p_c\). The exponent is once again found by doing linear regression on a logarithmic scale, and~\vref{fig:q} shows the result together with the approximate power-law \(L^{\num{\myD}}\).
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmode=log, ymode=log,
+            log basis x=2,
+            legend style={draw=none,at={(0.02,0.98)},anchor=north west},
+            legend cell align=left,
+            %legend columns=3,
+            thick,
+            %axis lines=middle,
+            %xlabel style={anchor=west},
+            %ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(L\)},
+            ylabel={\(M_{\text{SC}}(p_c,L)\)},
+            ]
+            \addplot+[only marks] table[x index=0, y index=1] {tmp/q.dat};
+            \addlegendentryexpanded {Simulation results};
+            \addplot+[mark=none] table[x index=0, y index=2] {tmp/q.dat};
+            \addlegendentryexpanded {Approximation \(L^{\num{\myD}}\)};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Mass of the singly connected bonds as a function of system size \(L\) with \(p=p_c\). These quantities should be related by a power-law, which is confirmed by the linearity on a logarithmic scale.}%
+    \label{fig:q}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xmode=log, ymode=log,
+            %log basis x=2,
+            legend style={draw=none,at={(0.02,0.98)},anchor=north west},
+            legend cell align=left,
+            %legend columns=3,
+            thick,
+            %axis lines=middle,
+            %xlabel style={anchor=west},
+            %ylabel style={anchor=south east},
+            %axis y discontinuity=crunch,
+            enlarge x limits=0.05,
+            enlarge y limits=0.1,
+            width=6in, height=3in,
+            xlabel={\(p-p_c\)},
+            ylabel={\(P_{\text{SC}}(p,L)\)},
+            ]
+            \addplot+[only marks] table {tmp/q2.dat};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Mass of the singly connected bonds as a function of system size \(L\) with \(p=p_c\). These quantities should be related by a power-law, which is confirmed by the linearity on a logarithmic scale.}%
+    \label{fig:q2}
+\end{figure}
 
 
 
