@@ -789,7 +789,7 @@ so that \(-1/\nu\) will be the slope when plotting \(\Pi^{-1}(x_1,L) - \Pi^{-1}(
 \[
     \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu},
 \]
-where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a linear function of \(L^{-1/\nu}\), with \(p_c\) as value at \(L^{-1/\nu}=0\), i.e. \(L=\infty\). the critical probability can therefore be estimated by calculating \(\Pi^{-1}\) as a function of \(L^{-1/\nu}\), doing linear regression and extracting the constant term. This gives~\vref{fig:n1}, and the different values of \(x\) give similar and quite accurate estimates for \(p_c\).
+where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a linear function of \(L^{-1/\nu}\), with \(p_c\) as value at \(L^{-1/\nu}=0\), i.e. \(L=\infty\). The critical probability can therefore be estimated by calculating \(\Pi^{-1}\) as a function of \(L^{-1/\nu}\), doing linear regression and extracting the constant term. This gives~\vref{fig:n1}, and the different values of \(x\) give similar and quite accurate estimates for \(p_c\).
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -856,6 +856,8 @@ By definition, \(x=\Pi(p,L)\), and hence applying \(\Phi\) on both sides gives
 \end{equation}
 The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(\Pi(p,L)\) as a function of \(\qty(p-p_c)L^{1/\nu}\). I have chosen to vary \(p\) for a few different values of \(L\).
 
+\Vref*{fig:ncollapse} displays the data collapse, and the results show that the graphs of \(\Pi(p,L)\) overlap when \(\qty(p-p_c)L^{1/\nu}\) is used as the \(x\) axis. The shape of the function \(\Phi(u)\) looks to be what a physicist would call ``reverse Fermi-Dirac with \(\mu=0\)'', i.e.\ a logistic function.
+
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -892,7 +894,7 @@ The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Percolation probability as a function of \(\qty(p-p_c)L^{1/\nu}\) for \(p\in\qty[0,1]\) and a few different values of \(L\). According to the finite size scaling guesses, the graphs should overlap, and the shape of the function should be that of \(\Phi(u)\).}%
+    \caption{Percolation probability as a function of \(\qty(p-p_c)L^{1/\nu}\) for \(p\in\qty[0,1]\) and a few different values of \(L\). According to the finite size scaling guesses, the graphs should overlap, and the shape of the function should be that of \(\Phi(u)\). The graphs do indeed overlap quite well, and the shape of \(\Phi(u)\) looks to be approximately logistic.}%
     \label{fig:ncollapse}
 \end{figure}
 
