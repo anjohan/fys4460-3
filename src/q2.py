@@ -9,7 +9,7 @@ pc = 0.592746
 L = 2**9
 num_samples = 100
 
-ps = pc * (1 + 10.0**(np.linspace(-9, 0, 1001)))
+ps = pc * (np.linspace(0.9, 1.1, 20))
 
 M_SC = np.zeros(len(ps))
 

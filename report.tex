@@ -955,8 +955,9 @@ As with the mass of the spanning cluster, the mass of the singly connected bonds
     \centering
     \begin{tikzpicture}
         \begin{axis}[
-            xmode=log, ymode=log,
-            %log basis x=2,
+            %xmode=log,
+            %ymode=log,
+            %xmax=0.001,
             legend style={draw=none,at={(0.02,0.98)},anchor=north west},
             legend cell align=left,
             %legend columns=3,
@@ -971,10 +972,10 @@ As with the mass of the spanning cluster, the mass of the singly connected bonds
             xlabel={\(p-p_c\)},
             ylabel={\(P_{\text{SC}}(p,L)\)},
             ]
-            \addplot+[only marks] table {tmp/q2.dat};
+            \addplot+[mark=none] table[x expr=\thisrowno{0}, y expr=\thisrowno{1}] {tmp/q2.dat};
         \end{axis}
     \end{tikzpicture}
-    \caption{Mass of the singly connected bonds as a function of system size \(L\) with \(p=p_c\). These quantities should be related by a power-law, which is confirmed by the linearity on a logarithmic scale.}%
+    \caption{Mass of the singly connected bonds as a function of system \(p-p_c\) with \(L=512\).}%
     \label{fig:q2}
 \end{figure}
 
