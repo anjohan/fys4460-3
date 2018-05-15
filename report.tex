@@ -951,14 +951,26 @@ As with the mass of the spanning cluster, the mass of the singly connected bonds
     \label{fig:q}
 \end{figure}
 
+The density of the singly connected bonds is defined in the same way as the density of the spanning cluster,
+\[
+    P_{\text{SC}}(p,L) = \frac{M_{\text{SC}}(p,L)}{L^2}.
+\]
+This is highest at \(p_c\), as there will then (on average) \textit{just} be a spanning cluster, and hence many singly connected bonds. When \(p<p_c\) it is not guaranteed that there is a spanning cluster at all, while \(p>p_c\) increases the probability of having multiple routes from one side to the other, thus reducing the number of singly connected bonds.
+
+The described behaviour is similar to that of \(s_\xi\), which also diverged for \(p\to p_c\). This quantity was found to be proportional to a negative power of \(\abs{p-p_c}\). According to multiple sources\cite{coniglio_cluster_1982,saberi_recent_2015} the density of the singly connected bonds should have a similar relation,
+\[
+    P_{\text{SC}}(p,L) \propto \abs{p-p_c}^{-1},
+\]
+independent of both lattice and dimensionality.
+
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
-            %xmode=log,
-            %ymode=log,
+            xmode=log,
+            ymode=log,
             %xmax=0.001,
-            legend style={draw=none,at={(0.02,0.98)},anchor=north west},
+            legend style={draw=none,at={(0.98,0.98)},anchor=north east},
             legend cell align=left,
             %legend columns=3,
             thick,
@@ -972,10 +984,13 @@ As with the mass of the spanning cluster, the mass of the singly connected bonds
             xlabel={\(p-p_c\)},
             ylabel={\(P_{\text{SC}}(p,L)\)},
             ]
-            \addplot+[mark=none] table[x expr=\thisrowno{0}, y expr=\thisrowno{1}] {tmp/q2.dat};
+            \addplot+[mark=none] table[x index=0, y index=2] {tmp/q2.dat};
+            \addlegendentryexpanded{\(p > p_c\)};
+            \addplot+[mark=none] table[x index=1, y index=3] {tmp/q2.dat};
+            \addlegendentryexpanded{\(p < p_c\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Mass of the singly connected bonds as a function of system \(p-p_c\) with \(L=512\).}%
+    \caption{Density of the singly connected bonds as a function of probability in an interval around the critical probability with \(L=512\).}%
     \label{fig:q2}
 \end{figure}
 
