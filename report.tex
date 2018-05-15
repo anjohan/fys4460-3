@@ -36,7 +36,7 @@
 \usepackage{textcomp}
 \usepackage{lastpage}
 \usepackage{microtype}
-\usepackage{subcaption}
+\usepackage[font=normalsize]{subcaption}
 \usepackage{luacode}
 \usepackage[linktoc=all, bookmarks=true, pdfauthor={Anders Johansson},pdftitle={FYS4460 Project 3}]{hyperref}
 \usepackage{tikz,pgfplots,pgfplotstable}
@@ -191,7 +191,7 @@ The functions \(\Pi(p,L)\) and \(P(p,L)\) are estimated by repeating a simulatio
 % |_.__/
 %
 \subsection{}
-The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. \(\Pi(p,L)\) is calculated by creating many random, binary matrices, counting the numbers of matrices which have a spanning cluster and dividing by the total number of matrices created.
+The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. \(\Pi(p,L)\) is calculated by creating many random, binary matrices, counting the number of matrices which have a spanning cluster and dividing by the total number of matrices created.
 
 If there is no spanning cluster, \(P(p,L)=0\), otherwise it is equal to the number of sites belonging to the spanning cluster, divided by the total number of sites. Hence it is equal to the probability of one randomly selected site being on the spanning cluster. An estimate is found by creating and labelling many binary matrices and averaging the number of sites on the spanning cluster (or zero), and dividing by the total number of sites on the lattice.
 
@@ -288,20 +288,20 @@ A variety of system sizes \(L\) and numbers of samples were used for probabiliti
 \end{figure}
 
 \subsection{}
-The same functions as in the previous exercise were used to calculate \(P(p,L)\) for probabilities going from slightly above the critical probability, \(p_c\), to \(\SI{20}{\percent}\) above \(p_c\). A lower bound of exactly \(p_c\) makes the computer complain when attempting to calculate \(\ln(p-p_c)\).
+The same functions as in the previous exercise were used to calculate \(P(p,L)\) for probabilities slightly above the critical probability. A lower bound of exactly \(p_\mathrm{c}\) makes the computer complain when attempting to calculate \(\ln(p-p_\mathrm{c})\).
 
-According to the exercise description, the spanning cluster density \(P(p,L)\) should be proportional to \(\qty(p-p_c)^\beta\) for some exponent \(\beta\) for \(p>p_c\). The exponent is found by doing linear regression on a log-log scale, as
+According to the exercise description, the spanning cluster density \(P(p,L)\) should be proportional to \(\qty(p-p_\mathrm{c})^\beta\) for some exponent \(\beta\) for \(p>p_\mathrm{c}\). The exponent is found by doing linear regression on a log-log scale, as
 \begin{equation}
-    P(p,L) = a\qty(p-p_c)^\beta \implies \log_{10}(P(p,L)) = \log_{10}(a) + \beta\log_{10}(p-p_c).
+    P(p,L) = a\qty(p-p_\mathrm{c})^\beta \implies \log_{10}(P(p,L)) = \log_{10}(a) + \beta\log_{10}(p-p_\mathrm{c}).
 \end{equation}
 \openin\infile=tmp/c_beta.dat
 \read\infile to \mybeta
 \closein\infile
-The exponent is therefore the slope of \(\log_{10}(P(p,L))\) as a function of \(\log_{10}(p-p_c)\). \Vref{fig:cP} shows the simulation results together with the theoretical model with \(\beta=\num{\mybeta}\) found from linear regression.
+The exponent is therefore the slope of \(\log_{10}(P(p,L))\) as a function of \(\log_{10}(p-p_\mathrm{c})\). \Vref{fig:cP} shows the simulation results together with the theoretical model with \(\beta=\num{\mybeta}\) found from linear regression.
 
 Fortran does, unfortunately, not have an \lstinline{np.polyfit} function, so the linear fit was done manually by calling a least squares subroutine from LAPACK.\@ \Vref{fig:cP} shows the result.
 
-A fairly poor fit is found for probabilities which are either close to or far away from the critical probability. The error for probabilities close to the critical probability is due to finite size effects; the theoretical model is exactly zero, while the finite size of the lattice causes the spanning cluster density to become non-zero even when \(p\) is slightly smaller than \(p_c\). On the opposite side of the spectrum, the deviation is also large when \(p\gg p_c\) due to the limited range of validity for the theoretical model.
+A fairly poor fit is found for probabilities which are either close to or far away from the critical probability. The error for probabilities close to the critical probability is due to finite size effects; the theoretical model is exactly zero, while the finite size of the lattice causes the spanning cluster density to become non-zero even when \(p\) is slightly smaller than \(p_\mathrm{c}\). On the opposite side of the spectrum, the deviation is also large when \(p\gg p_\mathrm{c}\) due to the limited range of validity for the theoretical model.
 
 \begin{figure}[H]
     \centering
@@ -329,10 +329,10 @@ A fairly poor fit is found for probabilities which are either close to or far aw
             \addplot+[mark=none] table[x index=0, ,y index=1] {tmp/c_P.dat};
             \addlegendentryexpanded{Simulation results};
             \addplot+[mark=none] table[x index=0, ,y index=2] {tmp/c_P.dat};
-            \addlegendentryexpanded{\(c\qty(p-p_c)^{\num{\mybeta}}\)};
+            \addlegendentryexpanded{\(c\qty(p-p_\mathrm{c})^{\num{\mybeta}}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{1024}\) and \(\num{50}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_c)^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. }%
+    \caption{Spanning cluster density as a function of the probability \(p\) with \(L=\num{1024}\) and \(\num{50}\) cycles for probabilities in the region just above the critical probability. The result is compared with \(c\qty(p-p_\mathrm{c})^\beta\), where \(\beta\) is found by doing a linear fit on a logarithmic scale. }%
     \label{fig:cP}
 \end{figure}
 
@@ -464,7 +464,7 @@ The cluster number density algorithm from the previous exercise was used. \Vref{
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Cluster number density as a function of size for a few different probabilities, with \(L=\num{1024}\) and \(\num{100}\) Monte Carlo cycles. As \(p\) approaches \(p_c\) from below, a larger and larger portion of the graph is approximately linear. Since both axes are logarithmic, this implies a power-law behaviour, \(n(s,p)\propto s^{-\tau}\).}%
+    \caption{Cluster number density as a function of size for a few different probabilities, with \(L=\num{1024}\) and \(\num{100}\) Monte Carlo cycles. As \(p\) approaches \(p_\mathrm{c}\) from below, a larger and larger portion of the graph is approximately linear. Since both axes are logarithmic, this implies a power-law behaviour, \(n(s,p)\propto s^{-\tau}\).}%
     \label{fig:f}
 \end{figure}
 
@@ -478,7 +478,7 @@ The cluster number density algorithm from the previous exercise was used. \Vref{
 \read\infile to \mytau
 \closein\infile
 \subsection{}
-As seen in~\vref{fig:f}, the cluster number density has a large linear part when \(p\to p_c\). Both axes in this figure are logarithmic, so the linearity implies a power-law behaviour for \(n(s,p_c)\), i.e. \(n(s,p_c)\propto s^{-\tau}\). \Vref{fig:g} shows \(n(s,p_c)\) with \(L^i\), \(i\in\qty{4,\dots,9}\), as well as the result of a linear fit for the largest system size. The linear part is found by staring at the graph, and the resulting exponent is \(\tau=\num{\mytau}\).
+As seen in~\vref{fig:f}, the cluster number density has a large linear part when \(p\to p_\mathrm{c}\). Both axes in this figure are logarithmic, so the linearity implies a power-law behaviour for \(n(s,p_\mathrm{c})\), i.e. \(n(s,p_\mathrm{c})\propto s^{-\tau}\). \Vref{fig:g} shows \(n(s,p_\mathrm{c})\) with \(L^i\), \(i\in\qty{4,\dots,9}\), as well as the result of a linear fit for the largest system size. The linear part is found by staring at the graph, and the resulting exponent is \(\tau=\num{\mytau}\).
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -497,7 +497,7 @@ As seen in~\vref{fig:f}, the cluster number density has a large linear part when
             enlarge y limits=0.1,
             width=6in, height=3in,
             xlabel={\(s\)},
-            ylabel={\(n(s,p_c)\)},
+            ylabel={\(n(s,p_\mathrm{c})\)},
             ]
             \addplot+[mark=none,dashed] table {tmp/g_9_approx.dat};
             \addlegendentryexpanded {\(s^{-\num{\mytau}}\)};
@@ -507,7 +507,7 @@ As seen in~\vref{fig:f}, the cluster number density has a large linear part when
             }
         \end{axis}
     \end{tikzpicture}
-    \caption{Cluster number density as a function of size with \(p=p_c\) and \(\num{1000}\) Monte Carlo cycles. The power-law model fits well over a large range of sizes.}%
+    \caption{Cluster number density as a function of size with \(p=p_\mathrm{c}\) and \(\num{1000}\) Monte Carlo cycles. The power-law model fits well over a large range of sizes.}%
     \label{fig:g}
 \end{figure}
 
@@ -520,9 +520,9 @@ As seen in~\vref{fig:f}, the cluster number density has a large linear part when
 \read\infile to \mysigma
 \closein\infile
 \subsection{}
-Comparing~\vref{fig:f} with~\vref{fig:g} shows that when \(p\approx p_c\), \(n(s,p)\) has a linear portion similar to that of \(n(s,p_c)\), but it falls off from the linear trend when \(s\) becomes large. This point of departure can be defined as a characteristic size \(s_\xi\). It can be numerically estimated as the point where \(n(s,p)\leq \tfrac{1}{2}n(s,p_c)\).
+Comparing~\vref{fig:f} with~\vref{fig:g} shows that when \(p\approx p_\mathrm{c}\), \(n(s,p)\) has a linear portion similar to that of \(n(s,p_\mathrm{c})\), but it falls off from the linear trend when \(s\) becomes large. This point of departure can be defined as a characteristic size \(s_\xi\). It is numerically estimated as the point where \(n(s,p)\leq \tfrac{1}{2}n(s,p_\mathrm{c})\).
 
-The characteristic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolation_2015} to be proportional to \(\abs{p-p_c}^{-1/\sigma}\), where \(\sigma\) once again is found by doing linear regression on a logarithmic scale.~\Vref{fig:h} shows the cluster number density as a function of size for probabilities approaching \(p_c\), with \(s_\xi\) marks based on the numerical estimate described above. The resulting \(s_\xi(p)\) is shown in~\vref{fig:h2}, and the theoretical model \(\abs{p-p_c}^{-1/\num{\mysigma}}\) gives a good approximation of the simulation results.
+The characteristic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolation_2015} to be proportional to \(\abs{p-p_\mathrm{c}}^{-1/\sigma}\), where \(\sigma\) once again is found by doing linear regression on a logarithmic scale.~\Vref{fig:h} shows the cluster number density as a function of size for probabilities approaching \(p_\mathrm{c}\), with \(s_\xi\) marks based on the numerical estimate described above. The resulting \(s_\xi(p)\) is shown in~\vref{fig:h2}, and the theoretical model \(\abs{p-p_\mathrm{c}}^{-1/\num{\mysigma}}\) gives a good approximation of the simulation results.
 
 \begin{figure}[H]
     \centering
@@ -560,7 +560,7 @@ The characteristic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolati
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Cluster number density as a function of size for probabilities just above \(p_c\) with \(L=512\) and \(\num{500}\) Monte Carlo cycles. The dots mark the numerical estimates of \(s_\xi\).}%
+    \caption{Cluster number density as a function of size for probabilities just above \(p_\mathrm{c}\) with \(L=512\) and \(\num{500}\) Monte Carlo cycles. The dots mark the numerical estimates of \(s_\xi\).}%
     \label{fig:h}
 \end{figure}
 
@@ -586,7 +586,7 @@ The characteristic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolati
             \addplot+[only marks] table[x index=0, ,y index=1] {tmp/h_s_xi2.dat};
             \addlegendentryexpanded{Simulation results};
             \addplot+[mark=none] table[x index=0, ,y index=2] {tmp/h_s_xi2.dat};
-            \addlegendentryexpanded{\(\abs{p-p_c}^{-1/\num{\mysigma}}\)};
+            \addlegendentryexpanded{\(\abs{p-p_\mathrm{c}}^{-1/\num{\mysigma}}\)};
         \end{axis}
     \end{tikzpicture}
     \caption{Characteristic cluster size \(s_\xi\) as a function of probability. As the probability approaches the critical probability, \(s_\xi\) diverges. The parameters of the power law model are found from linear regression on a logarithmic scale, and the resulting approximation looks good.}%
@@ -631,7 +631,7 @@ The mass of the percolating/spanning cluster \(M\) should be proportional to som
             \addlegendentryexpanded {Approximation \(L^{\num{\myD}}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Mass of the percolating cluster as a function of system size, with \(p=p_c\) and \(200\) Monte Carlo cycles. The power-law model fits well, and \(D=\num{\myD}<2\) shows the non-trivial geometry of the percolating cluster.}%
+    \caption{Mass of the percolating cluster as a function of system size, with \(p=p_\mathrm{c}\) and \(200\) Monte Carlo cycles. The power-law model fits well, and \(D=\num{\myD}<2\) shows the non-trivial geometry of the percolating cluster.}%
     \label{fig:i}
 \end{figure}
 
@@ -676,7 +676,7 @@ In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.
             \addlegendentryexpanded {\(x=\num{0.8}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Inverse of the percolation probability \(x = \Pi(p,L)\) as a function of \(L\) for two different values of \(x\). As \(L\) increases, \(p_{\Pi=x}\) approaches the same value for both values of \(x\). This value must be \(p_c\), since~\vref{fig:PI} shows that \(\Pi(p,L)\) approaches a step function around \(p_c\) as \(L\to\infty\). \(\Pi^{-1}(p,L)\) should therefore be almost constant, with value \(p_c\), for large values of \(L\).}%
+    \caption{Inverse of the percolation probability \(x = \Pi(p,L)\) as a function of \(L\) for two different values of \(x\). As \(L\) increases, \(p_{\Pi=x}\) approaches the same value for both values of \(x\). This value must be \(p_\mathrm{c}\), since~\vref{fig:PI} shows that \(\Pi(p,L)\) approaches a step function around \(p_\mathrm{c}\) as \(L\to\infty\). \(\Pi^{-1}(p,L)\) should therefore be almost constant, with value \(p_\mathrm{c}\), for large values of \(L\).}%
     \label{fig:l}
 \end{figure}
 
@@ -732,14 +732,14 @@ In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.
         \end{tikzpicture}
         \caption{Inverse percolation probability.}%
     \end{subfigure}
-    \caption{Approximate plot of the percolation probability and its inverse when \(L\) is large. In this limit, the percolation probability is nearly a step function centred at the critical probability \(p_c\), and the inverse is consequently approximately constant, with value \(p_c\).}%
+    \caption{Approximate plot of the percolation probability and its inverse when \(L\) is large. In this limit, the percolation probability is nearly a step function centred at the critical probability \(p_\mathrm{c}\), and the inverse is consequently approximately constant, with value \(p_\mathrm{c}\).}%
     \label{fig:PIinv}
 \end{figure}
-\Vref*{fig:l} shows that \(\Pi^{-1}(x)\) approaches some constant value as \(L\to\infty\). On the other hand,~\vref{fig:PI} shows that \(\Pi(p,L)\to \Theta(x-p_c)\) in the same limit, and so the constant value of \(\Pi^{-1}(x)\) must be \(p_c\). This is illustrated in~\vref{fig:PIinv}.
+\Vref*{fig:l} shows that \(\Pi^{-1}(x)\) approaches some constant value as \(L\to\infty\). On the other hand,~\vref{fig:PI} shows that \(\Pi(p,L)\to \Theta(x-p_\mathrm{c})\) in the same limit, and so the constant value of \(\Pi^{-1}(x)\) must be \(p_\mathrm{c}\). This is illustrated in~\vref{fig:PIinv}.
 
-It is difficult to exactly determine the nature of the approach to \(p_c\) from~\vref{fig:l}, but everything else in the world of percolation is a power law, so it seems reasonable to hope that this should be the case for \(\Pi^{-1}(x) - p_c\) as well, i.e.
+It is difficult to exactly determine the nature of the approach to \(p_\mathrm{c}\) from~\vref{fig:l}, but everything else in the world of percolation is a power law, so it seems reasonable to hope that this should be the case for \(\Pi^{-1}(x) - p_\mathrm{c}\) as well, i.e.
 \begin{equation}
-    \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu}
+    \Pi^{-1}(x,L) = p_\mathrm{c} + C(x)L^{-1/\nu}
 \end{equation}
 for some \(\nu\).
 This equation can be used to determine \(\nu\), as
@@ -785,11 +785,11 @@ so that \(-1/\nu\) will be the slope when plotting \(\Pi^{-1}(x_1,L) - \Pi^{-1}(
 % |_| |_|
 %
 \subsection{}
-\Vref*{fig:m} confirms the power-law behaviour of the approach of \(\Pi^{-1}(x,L)\) to \(p_c\) as a function of \(L\), i.e.
+\Vref*{fig:m} confirms the power-law behaviour of the approach of \(\Pi^{-1}(x,L)\) to \(p_\mathrm{c}\) as a function of \(L\), i.e.
 \[
-    \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu},
+    \Pi^{-1}(x,L) = p_\mathrm{c} + C(x)L^{-1/\nu},
 \]
-where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a linear function of \(L^{-1/\nu}\), with \(p_c\) as value at \(L^{-1/\nu}=0\), i.e. \(L=\infty\). The critical probability can therefore be estimated by calculating \(\Pi^{-1}\) as a function of \(L^{-1/\nu}\), doing linear regression and extracting the constant term. This gives~\vref{fig:n1}, and the different values of \(x\) give similar and quite accurate estimates for \(p_c\).
+where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a linear function of \(L^{-1/\nu}\), with \(p_\mathrm{c}\) as value at \(L^{-1/\nu}=0\), i.e. \(L=\infty\). The critical probability can therefore be estimated by calculating \(\Pi^{-1}\) as a function of \(L^{-1/\nu}\), doing linear regression and extracting the constant term. This gives~\vref{fig:n1}, and the different values of \(x\) give similar and quite accurate estimates for \(p_\mathrm{c}\).
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -826,7 +826,7 @@ where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a
                     txt = "\\addplot+[only marks] table {tmp/n_"
                           .. tostring(i) .. ".dat};"
                           .. "\\addlegendentryexpanded{\\(x = \\num{"
-                          .. line .. "}, p_c = \\num{" .. pc .. "}\\)};"
+                          .. line .. "}, p_\\mathrm{c} = \\num{" .. pc .. "}\\)};"
                     tex.sprint(txt)
                 end
                 local i = 0
@@ -839,24 +839,24 @@ where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Inverse percolation probability \(\Pi^{-1}(x,L)\) as a function of \(L^{-1/\nu}\) for a few different values of \(x\), together with linear fits. The intersection between the linear fit and the \(y\)-axis gives an estimate for the critical probability \(p_c\).}%
+    \caption{Inverse percolation probability \(\Pi^{-1}(x,L)\) as a function of \(L^{-1/\nu}\) for a few different values of \(x\), together with linear fits. The intersection between the linear fit and the \(y\)-axis gives an estimate for the critical probability \(p_\mathrm{c}\).}%
     \label{fig:n1}
 \end{figure}
 The function \(C(x)\) in
 \begin{equation}
-    \Pi^{-1}(x,L) = p_c + C(x)L^{-1/\nu}
+    \Pi^{-1}(x,L) = p_\mathrm{c} + C(x)L^{-1/\nu}
 \end{equation}
 is what the lecture notes call \(\Phi^{-1}(x)\). Consequently, with \(p=\Pi^{-1}(x,L)\),
 \begin{equation}
-    p - p_c = \Phi^{-1}(x) L^{-1/\nu} \implies \Phi^{-1}(x) = \qty(p-p_c)L^{1/\nu}.
+    p - p_\mathrm{c} = \Phi^{-1}(x) L^{-1/\nu} \implies \Phi^{-1}(x) = \qty(p-p_\mathrm{c})L^{1/\nu}.
 \end{equation}
 By definition, \(x=\Pi(p,L)\), and hence applying \(\Phi\) on both sides gives
 \begin{equation}
-    \Pi(p,L) = \Phi\qty(\qty(p-p_c)L^{1/\nu}).
+    \Pi(p,L) = \Phi\qty(\qty(p-p_\mathrm{c})L^{1/\nu}).
 \end{equation}
-The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(\Pi(p,L)\) as a function of \(\qty(p-p_c)L^{1/\nu}\). I have chosen to vary \(p\) for a few different values of \(L\).
+The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(\Pi(p,L)\) as a function of \(\qty(p-p_\mathrm{c})L^{1/\nu}\). I have chosen to vary \(p\) for a few different values of \(L\).
 
-\Vref*{fig:ncollapse} displays the data collapse, and the results show that the graphs of \(\Pi(p,L)\) overlap when \(\qty(p-p_c)L^{1/\nu}\) is used as the \(x\)-axis. The shape of the function \(\Phi(u)\) looks to be what a physicist would call ``reverse Fermi-Dirac with \(\mu=0\)'', i.e.\ a logistic function.
+\Vref*{fig:ncollapse} displays the data collapse, and the results show that the graphs of \(\Pi(p,L)\) overlap when \(\qty(p-p_\mathrm{c})L^{1/\nu}\) is used as the \(x\)-axis. The shape of the function \(\Phi(u)\) looks to be what a physicist would call ``reverse Fermi-Dirac with \(\mu\approx0\)'', i.e.\ a logistic function.
 
 \begin{figure}[H]
     \centering
@@ -877,7 +877,7 @@ The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(
             enlarge x limits=0.05,
             enlarge y limits=0.1,
             width=6in, height=3in,
-            xlabel={\(\qty(p-p_c)L^{1/\nu}\)},
+            xlabel={\(\qty(p-p_\mathrm{c})L^{1/\nu}\)},
             ylabel={\(\Pi\)},
             ]
             \begin{luacode*}
@@ -894,7 +894,7 @@ The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Percolation probability as a function of \(\qty(p-p_c)L^{1/\nu}\) for \(p\in\qty[0,1]\) and a few different values of \(L\). According to the finite size scaling guesses, the graphs should overlap, and the shape of the function should be that of \(\Phi(u)\). The graphs do indeed overlap quite well, and the shape of \(\Phi(u)\) looks to be approximately logistic.}%
+    \caption{Percolation probability as a function of \(\qty(p-p_\mathrm{c})L^{1/\nu}\) for \(p\in\qty[0,1]\) and a few different values of \(L\). According to the finite size scaling guesses, the graphs should overlap, and the shape of the function should be that of \(\Phi(u)\). The graphs do indeed overlap quite well, and the shape of \(\Phi(u)\) looks to be approximately logistic.}%
     \label{fig:ncollapse}
 \end{figure}
 
@@ -919,8 +919,11 @@ The \lstinline{walk} function implements the straightforward algorithm of left- 
 \openin\infile=tmp/qD.dat
 \read\infile to \myD
 \closein\infile
+\openin\infile=tmp/q2exp.dat
+\read\infile to \myexp
+\closein\infile
 \subsection{}
-As with the mass of the spanning cluster, the mass of the singly connected bonds should increase as some power of the system size \(L\) when \(p=p_c\). The exponent is once again found by doing linear regression on a logarithmic scale, and~\vref{fig:q} shows the result together with the approximate power-law \(L^{\num{\myD}}\).
+As with the mass of the spanning cluster, the mass of the singly connected bonds should increase as some power of the system size \(L\) when \(p=p_\mathrm{c}\). The exponent is once again found by doing linear regression on a logarithmic scale, and~\vref{fig:q} shows the result together with the approximate power-law \(L^{\num{\myD}}\).
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -939,7 +942,7 @@ As with the mass of the spanning cluster, the mass of the singly connected bonds
             enlarge y limits=0.1,
             width=6in, height=3in,
             xlabel={\(L\)},
-            ylabel={\(M_{\text{SC}}(p_c,L)\)},
+            ylabel={\(M_{\text{SC}}(p_\mathrm{c},L)\)},
             ]
             \addplot+[only marks] table[x index=0, y index=1] {tmp/q.dat};
             \addlegendentryexpanded {Simulation results};
@@ -947,7 +950,7 @@ As with the mass of the spanning cluster, the mass of the singly connected bonds
             \addlegendentryexpanded {Approximation \(L^{\num{\myD}}\)};
         \end{axis}
     \end{tikzpicture}
-    \caption{Mass of the singly connected bonds as a function of system size \(L\) with \(p=p_c\). These quantities should be related by a power-law, which is confirmed by the linearity on a logarithmic scale.}%
+    \caption{Mass of the singly connected bonds as a function of system size \(L\) with \(p=p_\mathrm{c}\). These quantities should be related by a power-law, which is confirmed by the linearity on a logarithmic scale.}%
     \label{fig:q}
 \end{figure}
 
@@ -955,13 +958,17 @@ The density of the singly connected bonds is defined in the same way as the dens
 \[
     P_{\text{SC}}(p,L) = \frac{M_{\text{SC}}(p,L)}{L^2}.
 \]
-This is highest at \(p_c\), as there will then (on average) \textit{just} be a spanning cluster, and hence many singly connected bonds. When \(p<p_c\) it is not guaranteed that there is a spanning cluster at all, while \(p>p_c\) increases the probability of having multiple routes from one side to the other, thus reducing the number of singly connected bonds.
+This is largest at \(p_\mathrm{c}\), as there will then (on average) barely be a spanning cluster, and hence many singly connected bonds. When \(p<p_\mathrm{c}\) it is not guaranteed that there is a spanning cluster at all, while \(p>p_\mathrm{c}\) increases the probability of having multiple routes from one side to the other, thus reducing the number of singly connected bonds.
 
-The described behaviour is similar to that of \(s_\xi\), which also diverged for \(p\to p_c\). This quantity was found to be proportional to a negative power of \(\abs{p-p_c}\). According to multiple sources\cite{coniglio_cluster_1982,saberi_recent_2015} the density of the singly connected bonds should have a similar relation,
+The described behaviour is similar to that of \(s_\xi\), which also diverged for \(p\to p_\mathrm{c}\). This quantity was found to be proportional to a negative power of \(\abs{p-p_\mathrm{c}}\). According to multiple sources\cite{coniglio_cluster_1982,saberi_recent_2015} the density of the singly connected bonds should have a similar relation,
 \[
-    P_{\text{SC}}(p,L) \propto \abs{p-p_c}^{-1},
+    P_{\text{SC}}(p,L) \propto \abs{p-p_\mathrm{c}}^{-1},
 \]
-independent of both lattice and dimensionality.
+independent of both lattice and dimensionality. \Vref{fig:q2} shows fairly good fit between a power-law and the simulation results, with
+\[
+    P_{\text{SC}}(p,L) \propto \abs{p-p_\mathrm{c}}^{\myexp},
+\]
+
 
 \begin{figure}[H]
     \centering
@@ -981,13 +988,13 @@ independent of both lattice and dimensionality.
             enlarge x limits=0.05,
             enlarge y limits=0.1,
             width=6in, height=3in,
-            xlabel={\(p-p_c\)},
+            xlabel={\(p-p_\mathrm{c}\)},
             ylabel={\(P_{\text{SC}}(p,L)\)},
             ]
+            \addplot+[only marks] table[x index=0, y index=1] {tmp/q2.dat};
+            \addlegendentryexpanded {Simulation results};
             \addplot+[mark=none] table[x index=0, y index=2] {tmp/q2.dat};
-            \addlegendentryexpanded{\(p > p_c\)};
-            \addplot+[mark=none] table[x index=1, y index=3] {tmp/q2.dat};
-            \addlegendentryexpanded{\(p < p_c\)};
+            \addlegendentryexpanded {Approximation \(\abs{p-p_\mathrm{c}}^{\num{\myexp}}\)};
         \end{axis}
     \end{tikzpicture}
     \caption{Density of the singly connected bonds as a function of probability in an interval around the critical probability with \(L=512\).}%
