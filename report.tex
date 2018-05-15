@@ -164,7 +164,7 @@ All files for this project are available at \url{https://github.com/anjohan/fys4
 %  \__,_|
 %
 \subsection{}
-As my Easter procrastination was reading a Fortran book\cite{brainerd_guide_2015}, I decided to implement this project in Fortran. Since there is no \lstinline{scipy.ndimage.measurements.label} in Fortran, the most important step was to implement an algorithm for labelling clusters in a binary matrix. Many high-perfomance algorithms exist for this task, and implementations of several of these in Fortran can be found on the internet. I, however, came up with a low-performance algorithm myself, and chose to implement it for fun.
+As my Easter procrastination was reading a Fortran book\cite{brainerd_guide_2015}, I decided to implement this project in Fortran. Since there is no \lstinline{scipy.ndimage.measurements.label} in Fortran, the most important step was to implement an algorithm for labelling clusters in a binary matrix. Many high-performance algorithms exist for this task, and implementations of several of these in Fortran can be found on the internet. I, however, came up with a low-performance algorithm myself and chose to implement it for fun.
 
 My algorithm goes through the entire grid, and for each site checks if it is occupied and unlabelled. If both these conditions are met, a recursive algorithm grows the entire cluster connected to this site.
 
@@ -174,11 +174,11 @@ where the recursive \lstinline{growcluster} subroutine simply checks if each nei
 \lstinputlisting[linerange={growclustersubroutinestart-growclustersubroutineend}]{lib/percolation.f90}
 This algorithm is easily extensible to other geometries and connectivities, as the basic idea ``check all sites, check all neighbours'' is generally valid. Higher dimensions should also be unproblematic, although a generalisation of checking all neighbours would be useful to avoid tedious coding.
 
-There is, however, one pressing issue with this algorithm: It is recursive (and not tail-recursive). As a result, it will give a stack overflow when run on sufficiently large systems. For this reason, I reluctantly had to abandon my algorithm and instead write a small Fortran interface for a C implementation of the Hoshen-Kopelman algorithm found on the internet\cite{fricke_hoshen-kopelman_2004}. Unfortunately, this implementation uses a lot of global variables and is not thread safe, so I now have my own Fortran implementation.
+There is, however, one pressing issue with this algorithm: It is recursive (and not tail-recursive). As a result, it will give a stack overflow for sufficiently large simulations. For this reason, I reluctantly had to abandon my algorithm and instead write a small Fortran interface for a C implementation of the Hoshen-Kopelman algorithm found on the internet\cite{fricke_hoshen-kopelman_2004}. Unfortunately, this implementation uses a lot of global variables and is not thread safe, so I now have my own Fortran implementation.
 
 Spanning cluster detection is done by checking if either the top and bottom rows or the left and right columns contain common elements. This is implemented by first going through one of the arrays and registering which labels are present, and then going through the other array and checking if any of the labels in this array were also present in the first,
 \lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{lib/percolation.f90}
-The algorithm assumes that there is only one spanning cluster. This should be unproblematic, as it is higly unlikely that two clusters stretch from one side of the grid to the other without touching each other and thus being the same cluster. When the label of the spanning cluster has been found, the area is straightforwardly calculated by a command like \lstinline{count(labelled_matrix == spanning_label)}.
+The algorithm assumes that there is only one spanning cluster. This should be unproblematic, as it is highly unlikely that two clusters stretch from one side of the grid to the other without touching each other and thus being the same cluster. When the label of the spanning cluster has been found, the area is straightforwardly calculated by a command like \lstinline{count(labelled_matrix == spanning_label)}.
 A sample run gives
 \lstinputlisting{tmp/verification.txt}
 
@@ -193,7 +193,7 @@ The functions \(\Pi(p,L)\) and \(P(p,L)\) are estimated by repeating a simulatio
 \subsection{}
 The probability of having a spanning cluster, \(\Pi(p,L)\), and the density of the spanning cluster, \(P(p,L)\), were estimated with the Fortran machinery described in the previous exercise. \(\Pi(p,L)\) is calculated by creating many random, binary matrices, counting the numbers of matrices which have a spanning cluster and dividing by the total number of matrices created.
 
-If there is no spanning cluster, \(P(p,L)=0\), otherwise it is equal to the number of sites belonging to the spanning cluster, divided by the total number of sites. Hence it is equal to the the probability of one randomly selected site being on the spanning cluster. An estimate is found by creating and labelling many binary matrices and averaging the number of sites on the spanning cluster (or zero), and dividing by the total number of sites on the lattice.
+If there is no spanning cluster, \(P(p,L)=0\), otherwise it is equal to the number of sites belonging to the spanning cluster, divided by the total number of sites. Hence it is equal to the probability of one randomly selected site being on the spanning cluster. An estimate is found by creating and labelling many binary matrices and averaging the number of sites on the spanning cluster (or zero), and dividing by the total number of sites on the lattice.
 
 Mathematically,
 \begin{alignat}{2}
@@ -414,7 +414,7 @@ and the results are shown in~\vref{fig:d}.
 %  \___|
 %
 \subsection{}
-The listed algorithm can be used to calculate the cluster number density \(n(s,p)\) with logarithmically binned sizes. \(n(s,p)\) is defined as the probability for a randomly selected site to be a specific site on a cluster with size \(s\). It can therefore be calculated as
+The listed algorithm can be used to calculate the cluster number density \(n(s,p)\) with logarithmically binned sizes. \(n(s,p)\) is defined as the probability of a randomly selected site being a specific site on a cluster with size \(s\). It can therefore be calculated as
 \begin{equation}
     n(s,p) = \frac{\displaystyle\sum_{\text{cycles}}\text{number of clusters with size } s}{\text{number of cycles}}.
 \end{equation}
@@ -520,9 +520,9 @@ As seen in~\vref{fig:f}, the cluster number density has a large linear part when
 \read\infile to \mysigma
 \closein\infile
 \subsection{}
-Comparing~\vref{fig:f} with~\vref{fig:g} shows that when \(p\approx p_c\), \(n(s,p)\) has a linear portion similar to that of \(n(s,p_c)\), but it falls of from the linear trend when \(s\) becomes large. This point of departure can be defined as a characteristic size \(s_\xi\). It can be numerically estimated as the point where \(n(s,p)\leq \tfrac{1}{2}n(s,p_c)\).
+Comparing~\vref{fig:f} with~\vref{fig:g} shows that when \(p\approx p_c\), \(n(s,p)\) has a linear portion similar to that of \(n(s,p_c)\), but it falls off from the linear trend when \(s\) becomes large. This point of departure can be defined as a characteristic size \(s_\xi\). It can be numerically estimated as the point where \(n(s,p)\leq \tfrac{1}{2}n(s,p_c)\).
 
-The characterstic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolation_2015} to be proportional to \(\abs{p-p_c}^{-1/\sigma}\), where \(\sigma\) once again is found by doing linear regression on a logarithmic scale.~\Vref{fig:h} shows the cluster number density as a function of size for probabilities approaching \(p_c\), with \(s_\xi\) marks based on the numerical estimate described above. The resulting \(s_\xi(p)\) is shown in~\vref{fig:h2}, and the theoretical model \(\abs{p-p_c}^{-1/\num{\mysigma}}\) gives a good approximation of the simulation results.
+The characteristic size \(s_\xi\) can be assumed\cite{malthe-sorenssen_percolation_2015} to be proportional to \(\abs{p-p_c}^{-1/\sigma}\), where \(\sigma\) once again is found by doing linear regression on a logarithmic scale.~\Vref{fig:h} shows the cluster number density as a function of size for probabilities approaching \(p_c\), with \(s_\xi\) marks based on the numerical estimate described above. The resulting \(s_\xi(p)\) is shown in~\vref{fig:h2}, and the theoretical model \(\abs{p-p_c}^{-1/\num{\mysigma}}\) gives a good approximation of the simulation results.
 
 \begin{figure}[H]
     \centering
@@ -732,7 +732,7 @@ In this problem we are interested in calculating the inverse of \(\Pi(p,L)\), i.
         \end{tikzpicture}
         \caption{Inverse percolation probability.}%
     \end{subfigure}
-    \caption{Approximate plot of the percolation probability and its inverse when \(L\) is large. In this limit, the percolation probability is nearly a step function centered at the critical probability \(p_c\), and the inverse is consequently approximately constant, with value \(p_c\).}%
+    \caption{Approximate plot of the percolation probability and its inverse when \(L\) is large. In this limit, the percolation probability is nearly a step function centred at the critical probability \(p_c\), and the inverse is consequently approximately constant, with value \(p_c\).}%
     \label{fig:PIinv}
 \end{figure}
 \Vref*{fig:l} shows that \(\Pi^{-1}(x)\) approaches some constant value as \(L\to\infty\). On the other hand,~\vref{fig:PI} shows that \(\Pi(p,L)\to \Theta(x-p_c)\) in the same limit, and so the constant value of \(\Pi^{-1}(x)\) must be \(p_c\). This is illustrated in~\vref{fig:PIinv}.
@@ -839,7 +839,7 @@ where \(\nu\) is known to be exactly \(4/3\). \(\Pi^{-1}\) should therefore be a
             \end{luacode*}
         \end{axis}
     \end{tikzpicture}
-    \caption{Inverse percolation probability \(\Pi^{-1}(x,L)\) as a function of \(L^{-1/\nu}\) for a few different values of \(x\), together with linear fits. The intersection between the linear fit and the \(y\) axis gives an estimate for the critical probability \(p_c\).}%
+    \caption{Inverse percolation probability \(\Pi^{-1}(x,L)\) as a function of \(L^{-1/\nu}\) for a few different values of \(x\), together with linear fits. The intersection between the linear fit and the \(y\)-axis gives an estimate for the critical probability \(p_c\).}%
     \label{fig:n1}
 \end{figure}
 The function \(C(x)\) in
@@ -856,7 +856,7 @@ By definition, \(x=\Pi(p,L)\), and hence applying \(\Phi\) on both sides gives
 \end{equation}
 The shape of the function \(\Phi(u)\) can therefore be determined by plotting \(\Pi(p,L)\) as a function of \(\qty(p-p_c)L^{1/\nu}\). I have chosen to vary \(p\) for a few different values of \(L\).
 
-\Vref*{fig:ncollapse} displays the data collapse, and the results show that the graphs of \(\Pi(p,L)\) overlap when \(\qty(p-p_c)L^{1/\nu}\) is used as the \(x\) axis. The shape of the function \(\Phi(u)\) looks to be what a physicist would call ``reverse Fermi-Dirac with \(\mu=0\)'', i.e.\ a logistic function.
+\Vref*{fig:ncollapse} displays the data collapse, and the results show that the graphs of \(\Pi(p,L)\) overlap when \(\qty(p-p_c)L^{1/\nu}\) is used as the \(x\)-axis. The shape of the function \(\Phi(u)\) looks to be what a physicist would call ``reverse Fermi-Dirac with \(\mu=0\)'', i.e.\ a logistic function.
 
 \begin{figure}[H]
     \centering
