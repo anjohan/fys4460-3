@@ -1,6 +1,6 @@
 program speedtest
-    use percolation
     use utilities
+    use percolation
     implicit none
     integer, parameter :: L = 10000
     integer :: number_of_labels

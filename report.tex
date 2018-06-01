@@ -177,7 +177,7 @@ This algorithm is easily extensible to other geometries and connectivities, as t
 There is, however, one pressing issue with this algorithm: It is recursive (and not tail-recursive). As a result, it will give a stack overflow for sufficiently large simulations. For this reason, I reluctantly had to abandon my algorithm and instead write a small Fortran interface for a C implementation of the Hoshen-Kopelman algorithm found on the internet\cite{fricke_hoshen-kopelman_2004}. Unfortunately, this implementation uses a lot of global variables and is not thread safe, so I now have my own Fortran implementation.
 
 Spanning cluster detection is done by checking if either the top and bottom rows or the left and right columns contain common elements. This is implemented by first going through one of the arrays and registering which labels are present, and then going through the other array and checking if any of the labels in this array were also present in the first,
-\lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{fortperc/src/percolation.f90}
+\lstinputlisting[linerange={intersectsnippetstart-intersectsnippetend}]{fortperc/src/utilities.f90}
 The algorithm assumes that there is only one spanning cluster. This should be unproblematic, as it is highly unlikely that two clusters stretch from one side of the grid to the other without touching each other and thus being the same cluster. When the label of the spanning cluster has been found, the area is straightforwardly calculated by a command like \lstinline{count(labelled_matrix == spanning_label)}.
 A sample run gives
 \lstinputlisting{tmp/verification.txt}
